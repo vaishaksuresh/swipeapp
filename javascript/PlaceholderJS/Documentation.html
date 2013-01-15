@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <title>Placeholder.js - Documentation</title>
+        <!-- Javascript -->
+        <script type="text/javascript" src="placeholder.js"></script>
+        
+        <!-- Style -->
+        <link href="http://fonts.googleapis.com/css?family=Dancing+Script" rel="stylesheet" type="text/css" />
+        <style type="text/css">
+        body
+        {
+            margin: 0;
+            background-color: #FAFAFA;
+            font-family: "Helvetica Neue", Helvetica Neue, Helvetica, Sans-serif;
+        }
+        
+        h1
+        {
+            width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            text-align: center;
+            font-size: 68px;
+            font-family: "Dancing Script", Helvetica, Serif;
+            text-shadow: 0px 1px 0px #FFFFFF;
+            color: #000000;
+            -webkit-mask-image: -webkit-gradient(linear, left top, left bottom, from(rgba(0,0,0,1)), to(rgba(0,0,0,0.5)));;
+        }
+        
+        h2
+        {
+            font-size: 14px;
+            color: #C0C0C0;
+            text-shadow: 0px 1px 0px #FFFFFF;
+        }
+        
+        div.content
+        {
+            width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        h2
+        {
+            margin: 20px 0px 0px 0px;
+            padding: 0px;
+        }
+        
+        p
+        {
+            color: #333;
+            font-size: 14px;
+        }
+        
+        p.code, pre
+        {
+            width: auto;
+            background-color: #F1F1F1;
+            border: 1px solid #C0C0C0;
+            border-radius: 5px;
+            padding: 10px;
+            color: #242424;
+            -webkit-border-radius: 5px;
+            -moz-border-radius: 5px;
+            box-shadow: 0 1px 0 #fff;
+        }
+
+        pre.right {
+            float: right;
+        }
+        
+        span
+        {
+            color: #35586C;
+            padding: 0px 2px;
+            background-color: #D1EEEE;
+            border: 1px solid #B0E0E6;
+            border-radius: 5px;
+            -webkit-border-radius: 5px;
+            -moz-border-radius: 5px;
+        }
+        
+        input[type="text"]
+        {
+            display: block;
+            width: 230px;
+            height: 25px;
+            background: #F5F6F7;
+            border: 1px solid #C0C0C0;
+            margin: 10px;
+            font-size: 16px;
+            outline: 0px;
+        }
+        
+        textarea
+        {
+            display: block;
+            width: 230px;
+            height: 100px;
+            background: #F5F6F7;
+            border: 1px solid #C0C0C0;
+            margin: 10px;
+            font-size: 16px;
+            outline: 0px;
+            font-family: "HelveticaNeue", Helvetica, Serif;
+        }
+        
+        p.foot
+        {
+            width: 400px;
+            margin-left: auto;
+            margin-right: auto;
+            margin-top: 60px;
+            margin-bottom: 20px;
+            text-align: center;
+            font-size: 12px;
+            color: #C0C0C0;
+            clear: both;
+        }
+        
+        a
+        {
+            color: #646464;
+            text-decoration: none;
+        }
+        
+        a:hover
+        {
+            color: #000000;
+            text-decoration: none;
+        }
+        
+        a.button
+        {
+            width: auto;
+            height: auto;
+            margin: 5px auto;
+            padding: 5px 10px;
+            background-color: #F1F1F1;
+            border: 1px solid #C0C0C0;
+            border-radius: 35px;
+            -webkit-border-radius: 35px;
+            -moz-border-radius: 35px;
+            color: #646464;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        a.button:hover
+        {
+            color: #242424;
+        }
+
+        a.button:active
+        {
+            color: #FFFFFF;
+            background-color: #C0C0C0;
+            border: 1px solid #909090;
+            text-shadow: 0 1px 0 rgba(0, 0, 0, 0.3);
+        }        
+        
+        p.notice {
+            padding: 5px;
+            color: #52482c;
+            background: #fffde5;
+            border: 1px solid #e0cba2;
+            border-radius: 3px;
+        }
+        
+        h3 {
+            color: #646464;
+        }
+        
+        li {
+            font-size: 14px;
+            color: #333;
+        }
+        
+        form {
+            float: left;
+        }
+        
+        .normal {
+            color: #333;
+            text-shadow: none;
+        }
+        .placeholder {
+            color: #C0C0C0;
+            font-style: italic;
+            text-shadow: 0 1px 0 #fff;
+        }
+        </style>
+    </head>
+    <body>
+        
+    <h1>Placeholder.js</h1>
+    
+    <div class="content">
+        <p class="notice"><span>Placeholder.js 1.1 is here !</span>
+            <br /><strong>What changed</strong> New wait attribute that let placeholder stay until text is typed, clear values of text fields when empty, etc... (see below)</p>
+            
+        <h2>DESCRIPTION</h2>
+        <p>Placeholder.js simulates the placeholder effect available in Safari and extends it to all browsers. It automatically apply this to all the <span>input text fields</span> and <span>textareas</span>. It comes in 4 different versions : a normal version, a minified version, a jQuery version and a minified jQuery version.</p>
+        
+        <h2>DOWNLOAD</h2>
+        <p>Download the latest version of Placeholder.js below :</p>
+        <div style="width:100%;margin:5px auto;text-align:center;"><a href="download.php?file=placeholderjs&version=1.1" class="button">Download 1.1</a></div>
+        
+        
+        <h2>USAGE</h2>
+        <p>The use of Placeholder.js is really simple. First, insert the following JS line in the page of your form :</p>
+        <pre>Placeholder.init();</pre>
+        
+        <p>Then set the placeholder attribute in your input text or textarea :</p>
+        <pre>&lt;input type="text" name="username" placeholder="Your username" /&gt;
+&lt;textarea name="description" placeholder="Your description"&gt;&lt;/textarea&gt;</pre>
+            
+        
+        <h2>EXTENDED USAGE</h2>
+        <p>You can also change the text colors of your input text fields or textareas. Just pass the two available arguments : <span>normal</span> and <span>placeholder</span>. The first argument sets the color or the text when typed and the second one the placeholder color. These are the default values by the way.</p>
+        <pre>Placeholder.init({
+    normal : "#000000",
+    placeholder : "#C0C0C0"
+});</pre>
+        <p>Placeholder.js 1.1 brings the <span>wait</span> attribute. This attribute makes the placeholder text stay until some text is typed.</p>
+        <pre>Placeholder.init({
+    wait: true
+});</pre>
+        <p>With 1.1, you get two more attributes <span>classFocus</span> and <span>classBlur</span> that define the CSS classes to use for both states: active and inactive. It's like <span>normal</span> and <span>placeholder</span> color attributes but for classes. <br />Note that, if both classes and colors attributes are set, <span>classFocus</span> and <span>classBlur</span> will be used in priority. <br /><br />The following code will use the CSS class "normal" for the normal state and the CSS class "placeholder" for the placeholder state.</p>
+        <pre>Placeholder.init({
+    classFocus: "normal",
+    classBlur:  "placeholder",
+});</pre>
+
+
+        <h2>CHANGE LOG</h2>
+        <h3>1.1</h3>
+        <ul>
+            <li>Two new attributes <span>classFocus</span> and <span>classBlur</span> for CSS classes use for both states instead of just text color</li>
+            <li>All text fields values are cleared at form submit when no text was typed</li>
+            <li>New <span>wait</span> attribute, placeholder displayed until text is typed</li>
+        </ul>
+        <h3>1.0</h3>
+        <ul>
+            <li>Normal and placeholder colors supported</li>
+            <li>Initial release</li>
+        </ul>
+
+            
+        <h2>DEMO</h2>
+        <form>
+            <input type="text" name="name" placeholder="Your name" />
+            <input type="text" name="website" placeholder="Your website" />
+            <textarea name="description" placeholder="Type a description"></textarea>
+            <input type="submit" />
+        </form>
+        <pre class="right">Placeholder.init({
+    wait: true,
+    classFocus: "normal",
+    classBlur:  "placeholder",
+});</pre>
+        
+        <p class="foot">&copy; 2011 <a href="http://widgetulous.com">Guillaume Gaubert</a></p>    
+    </div>
+        
+    <script type="text/javascript">
+        Placeholder.init({
+            classFocus: "normal",
+            classBlur:  "placeholder",
+            wait: true
+        });
+    </script>
+    </body>
+</html>

@@ -1,0 +1,199 @@
+body {
+	background: url(../../images/background_wood.jpg);
+	font-family: Rokkitt, 'Times New Roman', serif;
+}
+/* Start Header */
+
+header {
+	width: 960px;
+	margin: 0 auto;
+	text-align: center;
+}
+
+header p {
+	font: normal 2.5em/1.5em 'Rokkitt', Helvetica, Arial, sans-serif;
+	color: #730;
+}
+
+header img {
+	display: block;
+	max-width: 400px;
+	margin: auto;
+	margin-top: 10px;
+	-webkit-border-radius: 12px;
+	border-radius: 12px;
+	-moz-background-clip: padding; -webkit-background-clip: padding-box; background-clip: padding-box;
+	-webkit-box-shadow: 0px 0px 4px 0px #ffffff;
+	box-shadow: 0px 0px 4px 0px #ffffff;
+}
+header nav {
+	margin: 18px 0;
+	border-bottom: 4px solid #000;
+	padding-bottom: 5px;
+}
+
+header li {
+	display: inline;
+	border-right: 1px solid #000;
+}
+
+header li:last-child {
+	border-right:none;
+}
+
+header nav li a {
+	font-size: 1.8em;
+	color: #A21;
+	text-decoration: none;
+	padding: 0 10px;
+}
+
+header nav li a:hover {
+	color: #E41;
+}
+
+/* End Header */
+/* Start Footer */
+
+footer {
+	width: 960px;
+	margin: 0 auto;
+	text-align: center;
+	padding-top: 20px;
+	font-weight: bold;
+}
+
+footer nav {	
+	margin: 18px 0;
+	padding-top: 10px;
+	border-top: 4px solid #000;
+}
+
+
+footer li {
+	display: inline;
+	border-right: 1px dotted;
+}
+
+footer li:last-child {
+	border: none;
+}
+
+footer li a {
+	color: #af2411;
+	padding: 0 10px;
+}
+
+footer nav li a:hover {
+	color: #FFF;
+	background-color:#666;
+}
+
+
+/* End Footer */
+/* Start Pages */
+
+#pages {
+	width: 960px;
+	margin: 0 auto;
+	margin-top: 30px;
+}
+
+.handheld, #tabs {
+	display: none;
+}
+
+
+.foodlist {
+	float: left;
+	margin: 0 37%;
+	width: 360px;
+}
+
+.foodlist img {
+	width: 80px;
+	height: 80px;
+	border: 4px solid #FFF;
+	position: relative;
+	float: none;
+	-webkit-box-shadow:0 5px 10px #000;
+	-moz-box-shadow:0 5px 10px rgba(0, 0, 0, 0.7);
+	box-shadow:0 5px 10px rgba(0, 0, 0, 0.7);
+}
+
+.foodlist h2 {
+	font: normal 2.2em/1em 'Leckerli One',Helvetica, Arial, sans-serif;
+	color: #A21;
+	display: block;
+	text-shadow: 1px 1px 1px rgba(255,255,255,0.8);
+}
+
+.foodlist p {
+	padding: 5px 50px 10px 0;
+	font: bold 1em/1.1em Rokkitt, 'Times New Roman', serif;
+	font-weight: bold;
+	font-style: italic;
+	color: #540502;
+}
+
+foodlist li {
+	padding: 10px;
+}
+
+.foodlist li:hover {
+	cursor: pointer;
+}
+
+.foodlist li:hover img {
+	padding-left: 1px;
+}
+
+.foodlist .info {
+	width: 200px;
+	float:left;
+}
+
+.foodlist .info .photoname {
+	font: normal 1.3em/1em 'Luckiest Guy',Helvetica, Arial, sans-serif;
+	color: #674;
+	display: block;
+	text-shadow: 1px 1px 1px rgba(255,255,255,0.8);
+	padding-left: 10px;
+}
+
+.foodlist .info .description {
+	display: block;
+	padding-left: 10px;
+	font-size: 1.1em;
+	line-height: 1em;
+}
+
+.foodlist .info .price {
+	font: normal 1.2em/1.3em 'Luckiest Guy',Helvetica, Arial, sans-serif;
+	color: #A21;
+	text-shadow: 1px 1px 1px rgba(255,255,255,0.8);
+	display: block;
+	padding: 5px 0 10px 10px;
+}
+
+.foodlist li:hover .photoname {
+	color: #A21;
+}
+input.rounded {
+	border: 1px solid #ccc;
+	-moz-border-radius: 10px;
+	-webkit-border-radius: 10px;
+	border-radius: 10px;
+	-moz-box-shadow: 2px 2px 3px #666;
+	-webkit-box-shadow: 2px 2px 3px #666;
+	box-shadow: 2px 2px 3px #666;
+	font-size: 20px;
+	padding: 4px 0px;
+	outline: 0;
+	-webkit-appearance: none;
+	text-align: center;
+	width: 80%;
+}
+input.rounded:focus {
+	border-color: #339933;
+}
