@@ -22,8 +22,8 @@
 		<script src="_/js/modernizr-1.7.min.js"></script>
 		<link href='http://fonts.googleapis.com/css?family=Leckerli+One|Rokkitt:700,400|Luckiest+Guy' rel='stylesheet' type='text/css'>
 
-		<link rel="stylesheet" href="http://code.jquery.com/ui/1.9.2/themes/base/jquery-ui.css" />
 		<script src="http://code.jquery.com/jquery-1.8.3.js"></script>
+		<link rel="stylesheet" href="http://code.jquery.com/ui/1.9.2/themes/base/jquery-ui.css" />
 		<script src="http://code.jquery.com/ui/1.9.2/jquery-ui.js"></script>
 
 
@@ -89,7 +89,7 @@
 				</footer>
 
 				<!---<script src="//ajax.googleapis.com/ajax/libs/jquery/1.5.1/jquery.min.js"></script>
-				<script>window.jQuery || document.write("<script src='_/js/jquery-1.5.1.min.js'>\x3C/script>")</script>
-				<script src="_/js/functions.js"></script>--->
+				<script>window.jQuery || document.write("<script src='_/js/jquery-1.5.1.min.js'>\x3C/script>")</script>--->
+				<script src="_/js/functions.js"></script>
 			</body>
 			</html>

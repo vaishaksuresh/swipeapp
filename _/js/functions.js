@@ -5,21 +5,17 @@
 /* trigger when page is ready */
 $(document).ready(function() {
 
-    $( document ).tooltip({
-      position: {
-        my: "center bottom-20",
-        at: "center top",
-        using: function( position, feedback ) {
-          $( this ).css( position );
-          $( "<div>" )
-            .addClass( "arrow" )
-            .addClass( feedback.vertical )
-            .addClass( feedback.horizontal )
-            .appendTo( this );
+    $(document).tooltip({
+        position: {
+            my: "center bottom-20",
+            at: "center top",
+            using: function(position, feedback) {
+                $(this).css(position);
+                $("<div>").addClass("arrow").addClass(feedback.vertical).addClass(feedback.horizontal).appendTo(this);
+            }
         }
-      }
+
     });
-    
     // CLick action for the signinbutton
     $("#signinbutton").click(function(e) {
         e.preventDefault();
@@ -30,13 +26,14 @@ $(document).ready(function() {
                 data: $('#signin').serialize(),
                 success: function(data, textStatus) {
                     $('#inputarea').replaceWith($('#formarea', $(data)));
+                    $("#areaofinterest").change();
                 },
                 error: function(xhr, status, e) {
                     alert(status, e);
                 }
             });
             //$("#signin").submit();
-        }else{
+        } else {
             alert("One or more required field(s) missing.");
         }
     });
@@ -44,20 +41,21 @@ $(document).ready(function() {
     // CLick action for the admin signin- Without password and using swipe
     $("#adminsigninbutton").click(function(e) {
         e.preventDefault();
-        if ($.trim($('#studentid').val()).length > 0 ) {
+        if ($.trim($('#studentid').val()).length > 0) {
             $.ajax({
                 type: 'POST',
                 url: 'updateprofile.cfm',
                 data: $('#adminsignin').serialize(),
                 success: function(data, textStatus) {
                     $('#inputarea').replaceWith($('#formarea', $(data)));
+                    $("#areaofinterest").change();
                 },
                 error: function(xhr, status, e) {
                     alert(status, e);
                 }
             });
             //$("#signin").submit();
-        }else{
+        } else {
             alert("One or more required field(s) missing.");
         }
     });
@@ -71,16 +69,16 @@ $(document).ready(function() {
     });
 
     //Actions for Tabs on the handheld. Not valid Anymore
-    $('#tabupdateprofile').click(function(e){
-     $.get('updateprofile.cfm', function(data) {
-        $('#inputarea').replaceWith($('#formarea', $(data)));
+    $('#tabupdateprofile').click(function(e) {
+        $.get('updateprofile.cfm', function(data) {
+            $('#inputarea').replaceWith($('#formarea', $(data)));
+        });
     });
- });
-    $('#tabhome').click(function(e){
-     $.get('index.cfm', function(data) {
-        $('#formarea').replaceWith($('#inputarea', $(data)));
+    $('#tabhome').click(function(e) {
+        $.get('index.cfm', function(data) {
+            $('#formarea').replaceWith($('#inputarea', $(data)));
+        });
     });
- });
 
     //Actions for displaying spinner when ajax calls are made.
     $("#spinner").bind("ajaxSend", function() {
@@ -95,8 +93,52 @@ $(document).ready(function() {
     $("#manualsigninbutton").click(function(e) {
         window.open('/cf/vaishak');
         return false;
-
+    });
+    $("#areaofinterest").live("change", function() {
+        if ($("#areaofinterest").val() == 'others') {
+            $('#otherinterest').show();
+        } else {
+            $('#otherinterest').hide();
+        }
+    });
+    $("#areaofinterest").on("click", function() {
+        $("#areaofinterest").change();
     });
 
+    $("#updateprofilebutton").live('click', function(e) {
+        e.preventDefault();
+        if($.trim($('#studentname').val()).length<=0){
+            alert("Name Cannot Be Blank");
+            return false;
+        }
+        if($.trim($('#email').val()).length<=0){
+            alert("Email Cannot Be Blank");
+            return false;
+        }
+        if($("#areaofinterest").val() == 'others' && $.trim($('#otherinterest').val()).length<=0){
+            alert("Please enter area of interest");
+            $('#otherinterest').focus();
+            return false;
+        }
+        if ($('#subscription').is(":checked"))
+        {
+            $('#subscription').val(1);
+        }else{
+            $('#subscription').val(0);
+        }
+        $.ajax({
+            type: 'POST',
+            url: 'updateprofileindb.cfm',
+            data: $('#updateprofile').serialize(),
+            success: function(data, textStatus) {
+                $('#formarea').replaceWith($('#formarea', $(data)));
+                $("#areaofinterest").change();
+            },
+            error: function(xhr, status, e) {
+                alert(status, e);
+            }
+        });
+    });
+    
 
 });

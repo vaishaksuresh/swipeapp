@@ -12,14 +12,16 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <META HTTP-EQUIV="CACHE-CONTROL" CONTENT="NO-CACHE">
     <title>C.C.A.C Swipe Application</title>
+    <meta name="viewport" content="width=device-width, maximum-scale=1.0" />
     <link rel="stylesheet" href="_/css/style.css">
     <script src="_/js/modernizr-1.7.min.js"></script>
     <link href='http://fonts.googleapis.com/css?family=Leckerli+One|Rokkitt:700,400|Luckiest+Guy' rel='stylesheet' type='text/css'>
- 
+
     <script src="http://code.jquery.com/jquery-1.8.3.js"></script>
     <link rel="stylesheet" href="http://code.jquery.com/ui/1.9.2/themes/base/jquery-ui.css" />
     <script src="http://code.jquery.com/ui/1.9.2/jquery-ui.js"></script>
-    
+
+
     <!-- Stylesheets -->
     <link rel="stylesheet" href="./_/css/style.css" />
     <link rel="stylesheet" href="./_/css/desktop.css" />
@@ -33,24 +35,13 @@
     <cfapplication sessionmanagement="yes" sessiontimeout="#CreateTimeSpan(0,0,30,0)#">
     </head>
     <body>
-      <header> <a href="/"><img src="./images/logo.jpg" alt="Mexsantos Logo" /></a>
+      <header> <a href="/"><img src="./images/logo.jpg" alt="CCAC Logo" /></a>
       <p>Cesar E. Chavez Community Action Center</p>
-      <nav id="topnav">
-    <!---    <ul>
-          <li><a href="/cf/vaishak">Home</a></li>
-          <li ><a id="profilelink" href="updateprofilechange.cfm">Profile</a></li>
-          <li id="logoutlink"><a href="logout.cfm">Logout</a></li>
-        </ul> --->
-      </nav>
+      <nav id="topnav"> </nav>
     </header>
     <section id="pages" class="group">
       <div id="loadcontent" class="group">
-        <nav id="tabs">
-      <!--- <ul>
-            <li  id="tabhome">Home</li>
-            <li class="tapped" id="tabupdateprofile">Profile</li>
-          </ul> --->
-        </nav>
+        <nav id="tabs"> </nav>
         <section class="sectionlist show" id="formarea">
           <cfif cgi.request_method Eq 'post'>
             <cfset session.user = "" />
@@ -59,84 +50,176 @@
             <cfset session.phone = "" />
             <cfset session.major = "" />
             <cfset session.year = "" />
+            <cfset session.yearinschool = "" />
+            <cfset session.area_of_interest = "" />
+            <cfset session.other_interest = "" />
+            <cfset session.newslettercheckbox = ""/>
+            <cfquery name="getUserFromDB" datasource="cccac_swipe" result="UserDetailsResult">
+            Select * from ccac_registered_users WHERE student_id = #form.studentid#
+          </cfquery>
+          <!---Check if there is a user already--->
+          <cfif #UserDetailsResult.recordcount# gt 0>
+            <!--- If there is a user, get his details --->
             <cftry>
-              <cfinvoke component="cfcomponents.utilComponent" method="getStudentDetails" returnvariable="name">
-              <cfinvokeargument name="studentID" value="#form.studentid#"/>
-            </cfinvoke>
-            <cfset session.user=#listFirst(name,'$$')#>
-            <cfset session.studentid = #form.studentid# />
-            <cfset session.email = #listLast(name,'$$')# />
-            <cfset session.signinmethod = #form.signinmethod# />
-            <cfcatch type="any" >
-            <cfoutput>"Error"</cfoutput>
+              <cfloop query="getUserFromDB">
+                <cfset session.user = #name#/>
+                <cfset session.studentid = #student_id# />
+                <cfset session.email = #email# />
+                <cfset session.phone = #phone_number# />
+                <cfset session.major = #major# />
+                <cfset session.yearinschool = #year_in_college# />
+                <cfset session.area_of_interest = #area_of_interest# />
+                <cfset session.other_interest = #area_of_interest_value# />
+                <cfset total_login_count = #total_login_count#/>
+                <cfset session.newslettercheckbox = #subscribed_to_newsletter#/>
+                <cfset session.signinmethod = #form.signinmethod# />
+              </cfloop>
+              <!---Set a flag to indicate that there is a user in the database--->
+              <cfset databaseRecordFound = true/>
+              <cfset myDateTime = CreateODBCDateTime(#Now()#)>
+              <!--- Updating the last login timestamp --->
+              <cfquery name="updateUserInDB" datasource="cccac_swipe">
+              UPDATE ccac_registered_users set last_login_date = #myDateTime#, total_login_count = #total_login_count#+1 WHERE student_id = #session.studentid#
+            </cfquery>
+            <cfcatch type = "Database">
+            <cfoutput>
+              <p>Following Error Occured while Querying/Updating ccac_registered_users #cfcatch.message#</p>
+              <p>#cfcatch.detail# #cfcatch.Sql#</p>
+            </cfoutput>
+            <!---Set a flag to indicate that the user from the database could not be retrieved --->
+            <cfset databaseRecordFound = false/>
           </cfcatch>
         </cftry>
-        <cfset  ValidationStatus=""/>
-        <cflogin idletimeout="30">
-        <cfif #form.signinmethod# eq 'manual'>
+        <cfelse>
+          <!---Set a flag to indicate that there is no matching user in the database and the user needs to be registered --->
+          <cfset databaseRecordFound = false/>
+        </cfif>
+        <!---IF the user is not found in the database, look up  the details in the LDAP --->
+        <cfif #databaseRecordFound# eq false>
           <cftry>
-            <cfinvoke component="cfcomponents.utilComponent" method="validateUser" returnvariable="ValidationStatus">
+            <cfinvoke component="cfcomponents.utilComponent" method="getStudentDetails" returnvariable="name">
             <cfinvokeargument name="studentID" value="#form.studentid#"/>
-            <cfinvokeargument name="studentName" value="#session.user#"/>
-            <cfinvokeargument name="studentPassword" value="#form.studentpassword#"/>
           </cfinvoke>
-          <cfif #ValidationStatus# eq '1'>
-            <cfloginuser name="#form.studentid#" password="#session.user#" roles="user" />
+          <cfif #name# eq " $$ ">
+            <cfthrow type="Database"/>
           </cfif>
-          <cfcatch type="any">
-          <cfoutput>"Error, Could Not Sign In"</cfoutput>
-        </cfcatch>
-      </cftry>
-      <cfelse>
-        <cfset  ValidationStatus="1"/>
-        <cfloginuser name="#form.studentid#" password="fakepassword" roles="user" />
-      </cfif>
-    </cflogin>
+          <cfset session.user=#listFirst(name,'$$')#>
+          <cfset session.studentid = #form.studentid# />
+          <cfset session.email = #listLast(name,'$$')# />
+          <cfset session.signinmethod = #form.signinmethod# />
+          <!---After querying the LDAP, insert the user's data into the database --->
+          <cfquery name="registerUserInDB" datasource="cccac_swipe" >
+          INSERT INTO `ccac_registered_users` (`student_id`, `email`, `name`, `phone_number`, `major`, `year_in_college`, `area_of_interest`, `subscribed_to_newsletter`, `signup_date`, `last_login_date`, `last_update_date`, `last_update_mode`, `total_login_count`, `isactive`) 
+          VALUES ('#form.studentid#', '#session.email#', '#session.user#', '', '', '', NULL, 1, #Now()#, #Now()#, #Now()#, '#form.signinmethod#', 1, 1);
+        </cfquery>
+        <cfcatch type="any" >
+        <cfoutput>Error: The student ID is not present in our system or the university database. Please go <a href="javascript:window.history.back()">back</a> and verify the student ID.</cfoutput>
+        <cfabort>
+      </cfcatch>
+    </cftry>
   </cfif>
-  <cfif #IsUserLoggedIn()# eq 'YES'>
-    <h2>Greetings <cfoutput>, #session.user#</cfoutput></h2>
-    <p>Review or Update your profile information</p>
-    <form name="updateprofile" action="updateprofile.cfm">
-      <input type="text" class="rounded" name="name" placeholder="Name" title="Name" value="<cfoutput>#session.user#</cfoutput>"/>
-      <br />
-      <br />
-      <!--- <input type="text" class="rounded" name="studentid" placeholder="Student ID" value="<cfoutput>#session.studentid#</cfoutput>"/> --->
-      <input type="text" class="rounded" name="email" placeholder="Email ID" title="Email Address" value="<cfoutput>#session.email#</cfoutput>"/>
-      <br />
-      <br />
-      <input type="text" class="rounded" name="phone" title="Phone Number" placeholder="Phone Number"/>
-      <br />
-      <br />
-      <input type="text" class="rounded" name="major" title="Major" placeholder="Major"/>
-      <br />
-      <br />
-      <input type="text" class="rounded" name="year" title="Year In School" placeholder="Year"/>
-      <br />
-      <br />
-      <select class="rounded" id = "areaofinterest" title="Area of Interest">
-        <option value = "selectone" selcted="selected">Select Area of Interest</option>
-        <option value = "fe">FE</option>
-        <option value = "strive">Strive</option>
-        <option value = "legacytours">Legacy Tours</option>
-        <option value = "volunteer">Volunteer</option>
-        <option value = "workshops">Workshops</option>
-        <option value = "Others">Others</option>
-      </select>
-      <br />
-      <br />
-      <input type="checkbox" name="newsletter" value="subscribe" checked="yes"/>
-      Subscribe to the newsletter <br />
-      <br />
-      <input type="submit"  value="Update" name="updateprofile"/>
-      <input type="button"  value="Logout" name="logoutbutton" onClick="javascript:window.location.href='logout.cfm'" />
-    </form>
-    <cfelse>
-      <p>Entered Student ID and Password combination is invalid, please correct and login again.</p>
-    </cfif>
-  </section>
-  <!-- Appetizers -->
-  <section class="sectionlist hide" id="sides"> </section>
-  <!-- Sides -->
+  <cfset  ValidationStatus=""/>
+  <cflogin idletimeout="30">
+  <!--- Once the details have been obtained, check if the user is trying to login or swipe. --->
+  <cfif #form.signinmethod# eq 'manual'>
+    <!---If it is a manual login (The user has supplied ID and password, authenticate and login the user against the LDAP --->
+    <cftry>
+      <cfinvoke component="cfcomponents.utilComponent" method="validateUser" returnvariable="ValidationStatus">
+      <cfinvokeargument name="studentID" value="#form.studentid#"/>
+      <cfinvokeargument name="studentName" value="#session.user#"/>
+      <cfinvokeargument name="studentPassword" value="#form.studentpassword#"/>
+    </cfinvoke>
+    <cfif #ValidationStatus# eq '1'>
+      <cfloginuser name="#form.studentid#" password="#session.user#" roles="user" />
+      <cftry>
+        <!--- Inserting a new record for the login activity --->
+        <cfquery name="insertLoginDataInDB" datasource="cccac_swipe">
+        INSERT INTO login_activity (student_id,login_mode) values(#form.studentid#,'#form.signinmethod#')
+      </cfquery>
+      <cfcatch type = "Database">
+      <cfoutput>
+        <p>#cfcatch.message#</p>
+        <p>#cfcatch.detail#</p>
+      </cfoutput>
+    </cfcatch>
+  </cftry>
+</cfif>
+<cfcatch type="any">
+<cfoutput>"Error, Could Not Sign In"</cfoutput>
+</cfcatch>
+</cftry>
+<cfelse>
+  <!--- If the user has swiped, then there is no password associated with the login. Authentication not required since the card is present.--->
+  <cfset  ValidationStatus="1"/>
+  <!--- Simply login the user with a fake password. --->
+  <cfloginuser name="#form.studentid#" password="fakepassword" roles="user" />
+  <cftry>
+    <!--- Inserting a new record for the login activity --->
+    <cfquery name="insertLoginDataInDB" datasource="cccac_swipe">
+    INSERT INTO login_activity (student_id,login_mode) values(#form.studentid#,'#form.signinmethod#')
+  </cfquery>
+  <cfcatch type = "Database">
+  <cfoutput>
+    <p>#cfcatch.message#</p>
+    <p>#cfcatch.detail#</p>
+  </cfoutput>
+</cfcatch>
+</cftry>
+</cfif>
+</cflogin>
+</cfif>
+<cfif #IsUserLoggedIn()# eq 'YES'>
+  <h2>Greetings <cfoutput>, #session.user#</cfoutput></h2>
+  <p>Review or Update your profile information</p>
+  <cfform name="updateprofile" action="updateprofile.cfm">
+    <input type="text" class="rounded" name="name" id="studentname" placeholder="Name" title="Name" value="<cfoutput>#session.user#</cfoutput>" required="required"/>
+    <br />
+    <br />
+    <!--- <input type="text" class="rounded" name="studentid" placeholder="Student ID" value="<cfoutput>#session.studentid#</cfoutput>"/> --->
+    <input type="text" class="rounded" name="email" id="email" placeholder="Email ID" title="Email Address" value="<cfoutput>#session.email#</cfoutput>"/>
+    <br />
+    <br />
+    <input type="text" class="rounded" name="phone" if="phon" title="Phone Number" placeholder="Phone Number" value="<cfoutput>#session.phone#</cfoutput>"/>
+    <br />
+    <br />
+    <input type="text" class="rounded" name="major" title="Major" placeholder="Major" value="<cfoutput>#session.major#</cfoutput>"/>
+    <br />
+    <br />
+    <!--- <input type="text" class="rounded" name="year" title="Year In School" placeholder="Year"/> --->
+    <select class="rounded" name="year" id = "yearinschool" title="Year In School">
+      <option value = "selectone" selcted="selected">Select Year</option>
+      <option value = "freshman" <cfif #session.yearinschool# eq 'freshman'>selected='selected'</cfif>>Freshman</option>
+      <option value = "sophomore" <cfif #session.yearinschool# eq 'sophomore'>selected='selected'</cfif>>Sophomore</option>
+      <option value = "senior" <cfif #session.yearinschool# eq 'senior'>selected='selected'</cfif>>Senior</option>
+      <option value = "graduate" <cfif #session.yearinschool# eq 'graduate'>selected='selected'</cfif>>Graduate Student</option>
+    </select>
+    <br />
+    <br />
+    <select class="rounded" name="areaofinterest" id = "areaofinterest" title="Area of Interest">
+      <option value = "selectone" selcted="selected">Select Area of Interest</option>
+      <option value = "fe" <cfif #session.area_of_interest# eq 'fe'>selected='selected'</cfif>>FE</option>
+      <option value = "strive" <cfif #session.area_of_interest# eq 'strive'>selected='selected'</cfif>>Strive</option>
+      <option value = "legacytours" <cfif #session.area_of_interest# eq 'legacytours'>selected='selected'</cfif>>Legacy Tours</option>
+      <option value = "volunteer" <cfif #session.area_of_interest# eq 'volunteer'>selected='selected'</cfif>>Volunteer</option>
+      <option value = "workshops" <cfif #session.area_of_interest# eq 'workshops'>selected='selected'</cfif>>Workshops</option>
+      <option value = "others" <cfif #session.area_of_interest# eq 'others'>selected='selected'</cfif>>Others</option>
+    </select>
+    <br />
+    <br />
+    <input type="text" class="rounded" name="otherinterest" id="otherinterest" title="Other Intestest" placeholder="Others"
+    value="<cfoutput>#session.other_interest#</cfoutput>" style="display:none;"/>
+    <br>
+    <br>
+    <input type="checkbox" name="newslettercheckbox" id="subscription" value="1" <cfif #session.newslettercheckbox# eq 1>checked='yes'</cfif> />
+    Subscribe to the newsletter <br />
+    <br />
+    <input type="submit"  value="Update" id="updateprofilebutton" name="updateprofile"/>
+    <input type="button"  value="Logout" name="logoutbutton" onClick="javascript:window.location.href='logout.cfm'" />
+  </cfform>
+  <cfelse>
+    <p>Entered Student ID and Password combination is invalid, please correct and <a href="index.cfm">login</a> again.</p>
+  </cfif>
+</section>
 </div>
 <!-- Load Content -->
 </section>

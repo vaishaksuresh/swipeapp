@@ -120,6 +120,15 @@ footer nav li a:hover {
 	-moz-box-shadow:0 5px 10px rgba(0, 0, 0, 0.7);
 	box-shadow:0 5px 10px rgba(0, 0, 0, 0.7);
 }
+.sectionlist svg {
+	width: 350px;
+	border: 4px solid #FFF;
+	position: relative;
+	float: none;
+	-webkit-box-shadow:0 5px 10px #000;
+	-moz-box-shadow:0 5px 10px rgba(0, 0, 0, 0.7);
+	box-shadow:0 5px 10px rgba(0, 0, 0, 0.7);
+}
 
 .sectionlist h2 {
 	font: normal 2.2em/1em 'Rokkitt',Helvetica, Arial, sans-serif;
@@ -188,10 +197,9 @@ input.rounded {
 	-webkit-box-shadow: 2px 2px 3px #666;
 	box-shadow: 2px 2px 3px #666;
 	font-size: 20px;
-	padding: 4px 0px;
+	padding: 4px 4px;
 	outline: 0;
 	-webkit-appearance: none;
-	text-align: center;
 	width: 80%;
 }
 input.rounded:focus {
@@ -206,18 +214,17 @@ select.rounded {
 	-webkit-box-shadow: 2px 2px 3px #666;
 	box-shadow: 2px 2px 3px #666;
 	font-size: 20px;
-	padding: 4px 0px;
+	padding: 4px 4px;
 	outline: 0;
 	-webkit-appearance: none;
-	text-align: center;
 	width: 80%;
 }
 select.rounded:focus {
 	border-color: #339933;
 }
-option {
+/*option {
 	text-align: center;
-}
+}*/
 .hide {
 	display: none;
 }
