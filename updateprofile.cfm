@@ -145,7 +145,7 @@
   </cftry>
 </cfif>
 <cfcatch type="any">
-<cfoutput>"Error, Could Not Sign In"</cfoutput>
+<cfoutput>"Error, Could Not Sign In: #session.user#"</cfoutput>
 </cfcatch>
 </cftry>
 <cfelse>
@@ -171,7 +171,11 @@
 <cfif #IsUserLoggedIn()# eq 'YES'>
   <h2>Greetings <cfoutput>, #session.user#</cfoutput></h2>
   <p>Review or Update your profile information</p>
-  <cfform name="updateprofile" action="updateprofile.cfm">
+  <cfif #isDefined("session.message")#>
+    <cfoutput><p>#session.message#</cfoutput>
+    <cfset #session.message# = "" />
+  </cfif>
+  <form name="updateprofile" id="updateprofile" action="updateprofile.cfm">
     <input type="text" class="rounded" name="name" id="studentname" placeholder="Name" title="Name" value="<cfoutput>#session.user#</cfoutput>" required="required"/>
     <br />
     <br />
@@ -215,7 +219,7 @@
     <br />
     <input type="submit"  value="Update" id="updateprofilebutton" name="updateprofile"/>
     <input type="button"  value="Logout" name="logoutbutton" onClick="javascript:window.location.href='logout.cfm'" />
-  </cfform>
+  </form>
   <cfelse>
     <p>Entered Student ID and Password combination is invalid, please correct and <a href="index.cfm">login</a> again.</p>
   </cfif>

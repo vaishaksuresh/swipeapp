@@ -11,7 +11,6 @@
 	<head id="swipeapp" data-template-set="html5-reset">
 
 		<meta charset="utf-8">
-		<cfcontent type="text/html; charset=utf-8">
 
 		<!-- Always force latest IE rendering engine (even in intranet) & Chrome Frame -->
 		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
@@ -47,47 +46,34 @@
 			<cfif #IsUserLoggedIn()# eq 'YES'>
 				<cflocation url="updateprofile.cfm" addtoken="no" />
 			</cfif>
-			<header>
+			<header></br>
 				<a href="/"><img src="./images/logo.jpg" alt="Mexsantos Logo" /></a>
 				<p>Cesar E. Chavez Community Action Center</p>
-				<nav id="topnav">
-						<!-- <ul>
-							<li><a href="/cf/vaishak">Home</a></li>
-							<li ><a id="profilelink" href="updateprofilechange.cfm">Profile</a></li>
-							<li id="logoutlink"><a href="logout.cfm">Logout</a></li>
-						</ul> -->
+			</header>
+			<div id="spinner" class="spinner" style="display:none;">
+				<img id="img-spinner" src="./images/spinner.gif" alt="Loading"/>
+			</div>
+			<section id="pages" class="group">
+				<div id="loadcontent" class="group">
+					<nav id="tabs">
 					</nav>
-				</header>
-				<div id="spinner" class="spinner" style="display:none;">
-					<img id="img-spinner" src="./images/spinner.gif" alt="Loading"/>
-				</div>
-				<section id="pages" class="group">
-					<div id="loadcontent" class="group">
-						<nav id="tabs">
-							<!--- <ul>
-								<li class="tapped" id="tabhome">Home</li>
-								<li  id="tabupdateprofile">Profile</li>
-							</ul> --->
-						</nav>
-						<section class="sectionlist show" id="inputarea">
-							<h2>Sign In</h2>
-							<p>Please Enter Student ID and SJSU One Password</p>
-							<cfform name="signin" action="updateprofile.cfm">
-								<input type="text" class="rounded" name="studentid" id="studentid" placeholder="Student ID" required="required"><br /><br />
-								<input type="password" class="rounded" name="studentpassword" id="studentpassword" placeholder="SJSU One Password" required="required"><br /><br />
-								<input type="hidden" name="signinmethod" id="signinmethod" value="manual">
-								<input type="submit" value="Sign In" name="signin" id="signinbutton">
-							</cfform><br />
-						</section> <!-- Appetizers -->
-
-					</div> <!-- Load Content -->
-				</section> <!-- Pages-->
-				<footer class="group">
-					<p></p>
-					<nav id="bottomnav">
-					</nav>
-				</footer>
-
+					<section class="sectionlist show" id="inputarea">
+						<h2>Sign In</h2>
+						<p>Please Enter Student ID and SJSU One Password</p>
+						<form name="signin" id="signin" action="updateprofile.cfm">
+							<input type="text" class="rounded" name="studentid" id="studentid" placeholder="Student ID" required="required"><br /><br />
+							<input type="password" class="rounded" name="studentpassword" id="studentpassword" placeholder="SJSU One Password" required="required"><br /><br />
+							<input type="hidden" name="signinmethod" id="signinmethod" value="manual">
+							<input type="submit" value="Sign In" name="signin" id="signinbutton">
+						</form><br />
+					</section>
+				</div> <!-- Load Content -->
+			</section> <!-- Pages-->
+			<footer class="group">
+				<p></p>
+				<nav id="bottomnav">
+				</nav>
+			</footer>
 				<!---<script src="//ajax.googleapis.com/ajax/libs/jquery/1.5.1/jquery.min.js"></script>
 				<script>window.jQuery || document.write("<script src='_/js/jquery-1.5.1.min.js'>\x3C/script>")</script>--->
 				<script src="_/js/functions.js"></script>

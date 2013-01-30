@@ -12,8 +12,8 @@ header img {
 .sectionlist {
 	width: 100%;
 	padding-top: 10px;
-	left: 50px;
-	top:200px;
+	/*left: 50px;
+	top:200px;*/
 }
 
 .sectionlist .info {

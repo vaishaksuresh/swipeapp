@@ -1,50 +1,17 @@
-<html>
-  <head>
-    <!--Load the AJAX API-->
-    <script type="text/javascript" src="https://www.google.com/jsapi"></script>
-    <script src="http://code.jquery.com/jquery-1.8.3.js"></script>
-    <script type="text/javascript">
-    
-    // Load the Visualization API and the piechart package.
-    google.load('visualization', '1', {'packages':['corechart']});
+<cffunction name="getStudentDetails" access="public" returntype="string">
+    <cfargument name="studentID" type="string" required="yes">
+    <cfldap action="query" name="results" start="ou=sjsupeople,dc=sjsuad,dc=sjsu,dc=edu" 
+    attributes="cn,samaccountname,mail,dn,mobile,ou" server="130.65.3.134" port="636" password="def678AD" 
+    username="cn=phpldap2,ou=users,ou=administration,dc=sjsuad,dc=sjsu,dc=edu" secure="CFSSL_BASIC" filter="samaccountname=#studentID#">
+    <cfset myResult=" $$ ">
+    <cfoutput query = "results">
+      <cfset myResult=#ou#>
+    </cfoutput>
+    <cfreturn myResult>
+  </cffunction>
 
-    // Set a callback to run when the Google Visualization API is loaded.
-    google.setOnLoadCallback(drawChart);
-
-    function drawChart() {
-      $.ajax({
-        url: "getJSON.cfm",
-        dataType: "json",
-        success: function (jsonData) {
-          alert('success');
-          if (!$.browser.msie) {
-            console.log(jsonData);
-
-          }
-            // Create our data table out of JSON data loaded from server. 
-            var data = new google.visualization.DataTable(jsonData);
-            
-            // Instantiate and draw our chart, passing in some options. 
-            var chart = new google.visualization.PieChart(document.getElementById('chart_div'));
-            chart.draw(data, {
-              width: 400,
-              height: 240
-            });
-          },
-          error: function (jqXHR, textStatus, errorThrown) {
-            alert(textStatus + '\n' + errorThrown);
-            if (!$.browser.msie) {
-              console.log(jqXHR);
-            }
-          }
-        });
-    } 
-
-    </script>
-  </head>
-
-  <body>
-    <!--Div that will hold the pie chart-->
-    <div id="chart_div"></div>
-  </body>
-  </html>
+  <cfinvoke method="getStudentDetails" returnvariable="name">
+      <!--- <cfinvokeargument name="studentID" value="008663109"/> --->
+      <cfinvokeargument name="studentID" value="008646235"/>
+  </cfinvoke>
+  <cfoutput>#name#</cfoutput>

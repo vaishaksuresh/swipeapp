@@ -3,7 +3,7 @@
   <cffunction name="getStudentDetails" access="public" returntype="string">
     <cfargument name="studentID" type="string" required="yes">
     <cfldap action="query" name="results" start="ou=sjsupeople,dc=sjsuad,dc=sjsu,dc=edu" 
-    attributes="cn,samaccountname,mail,dn,mobile" server="130.65.3.134" port="636" password="def678AD" 
+    attributes="cn,samaccountname,mail,dn,mobile,ou" server="130.65.3.134" port="636" password="def678AD" 
     username="cn=phpldap2,ou=users,ou=administration,dc=sjsuad,dc=sjsu,dc=edu" secure="CFSSL_BASIC" filter="samaccountname=#studentID#">
     <cfset myResult=" $$ ">
     <cfoutput query = "results">
@@ -21,7 +21,7 @@
     <cftry>
       <cfldap action="query" name="results" start="ou=sjsupeople,dc=sjsuad,dc=sjsu,dc=edu" 
       attributes="cn,samaccountname,mail,dn,mobile" server="130.65.3.134" port="636" password="#studentPassword#" 
-      username="CN=#studentName#, OU=Employees, ou=sjsupeople, dc=sjsuad, dc=sjsu, dc=edu" secure="CFSSL_BASIC" filter="samaccountname=#studentID#">
+      username="CN=#studentName#, OU=Employees, ou=sjsupeople, dc=sjsuad, dc=sjsu, dc=edu" secure="CFSSL_BASIC" filter="samaccountname=#studentID#" scope="subtree">
         <cfoutput query = "results">
           <cfset myResult=#results.recordCount#>
         </cfoutput>
@@ -29,6 +29,19 @@
         <cfset myResult="Not Validated">
       </cfcatch>
     </cftry>
+    <cfif #myResult# eq "Not Validated">
+      <cftry>
+      <cfldap action="query" name="results" start="ou=sjsupeople,dc=sjsuad,dc=sjsu,dc=edu" 
+      attributes="cn,samaccountname,mail,dn,mobile" server="130.65.3.134" port="636" password="#studentPassword#" 
+      username="CN=#studentName#, OU=Students, ou=sjsupeople, dc=sjsuad, dc=sjsu, dc=edu" secure="CFSSL_BASIC" filter="samaccountname=#studentID#" scope="subtree">
+        <cfoutput query = "results">
+          <cfset myResult=#results.recordCount#>
+        </cfoutput>
+        <cfcatch type="any">
+        <cfset myResult="Not Validated">
+      </cfcatch>
+    </cftry>
+    </cfif>
     <cfreturn myResult>
   </cffunction>
   </cfcomponent>

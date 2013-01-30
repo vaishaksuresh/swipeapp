@@ -82,7 +82,7 @@
     google.setOnLoadCallback(drawTable);
     function drawTable() {
      $.ajax({
-      url: "getJSON.cfm",
+      url: "getJSONwithDetails.cfm",
       data: "startDate="+$("#startDateText").val()+"&endDate="+$("#endDate").val(),
         //data: "startDate=01/16/2013&endDate=01/23/2013",
         dataType: "json",

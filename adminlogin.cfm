@@ -9,9 +9,9 @@
 	<!-- the "no-js" class is for Modernizr. -->
 
 	<head id="swipeapp" data-template-set="html5-reset">
+		<!--- <cfhtmlhead text='id="swipeapp" data-template-set="html5-reset"' /> --->
 
 		<meta charset="utf-8">
-		<cfcontent type="text/html; charset=utf-8">
 
 		<!-- Always force latest IE rendering engine (even in intranet) & Chrome Frame -->
 		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
@@ -41,55 +41,122 @@
 		<link rel="stylesheet" href="./_/css/tablet.css" media="(min-width:800px) and (max-width:800px)" />
 		<cfapplication sessionmanagement="yes" sessiontimeout="#CreateTimeSpan(0,0,30,0)#">
 
+			<script language="javascript">
+
+			function getDocHeight() {
+				var D = document;
+				return Math.max(
+					Math.max(D.body.scrollHeight, D.documentElement.scrollHeight),
+					Math.max(D.body.offsetHeight, D.documentElement.offsetHeight),
+					Math.max(D.body.clientHeight, D.documentElement.clientHeight)
+					);
+			}
+			var isOpen = false;
+			function doOverlayOpen() {
+				isOpen = true;
+				showOverlayBox();
+				$('.bgCover').css({
+					height: getDocHeight(),
+					opacity: 0
+				}).animate({
+					opacity: 0.5,
+					backgroundColor: '#000'
+				});
+				return false;
+			}
+			function doOverlayClose() {
+				alert("Closing");
+				isOpen = false;
+				$('.divoverlayBox').css('display', 'none');
+				$('.bgCover').animate({
+					opacity: 0
+				}, null, null, function() {
+					$(this).hide();
+				});
+				return false;
+			}
+			function showOverlayBox() {
+				if (isOpen === false) {
+					return;
+				}
+				$('.divoverlayBox').css({
+					//position: 'fixed',
+					display: 'block'
+				});
+				$('.bgCover').css({
+					display: 'block',
+					width: $(window).width(),
+					height: getDocHeight()	
+				});
+			}
+			$(window).bind('resize', showOverlayBox);
+			
+			$('#closeLink').click(function(e){
+				e.preventDefault();
+				doOverlayClose();
+			});
+
+			$(document).ready(function(){
+
+				if($(window).width()>800){
+					$("#eventboxol").load('adminlogin.cfm #inputarea', function(response, status, xhr) {
+						if (status != "error") {
+							$("#eventboxol #inputarea").css({
+								margin: '0 10%'
+							});
+							doOverlayOpen();
+						}else{
+							alert(errorMessage);
+						}
+					});
+					$(window).on('resize',function(){
+						showOverlayBox();
+					});
+				}
+
+			});
+			</script>
 		</head>
 		<body>
-			<cfif #IsUserLoggedIn()# eq 'YES'>
-				<cflocation url="updateprofile.cfm" addtoken="no" />
+			<div class="bgCover">&nbsp;</div>
+			<!--- <div class="divoverlayBox" style="top:29%;left:30%;width:500px;"> --->
+			<div class="divoverlayBox">
+				<div class="overlayContent">
+					<div id="eventboxol"> </div>
+				</div>
+			</div>
+			<cfif #isDefined("session.isadmin")# AND #session.isadmin# eq "true">
+				<cflocation url="swipelogin.cfm" addtoken="false"/>
 			</cfif>
 			<header>
-				<a href="/"><img src="./images/logo.jpg" alt="Mexsantos Logo" /></a>
+				<a href="/"><img src="./images/logo.jpg" alt="AS Logo" /></a>
 				<p>Cesar E. Chavez Community Action Center</p>
 				<nav id="topnav">
-						<!-- <ul>
-							<li><a href="/cf/vaishak">Home</a></li>
-							<li ><a id="profilelink" href="updateprofilechange.cfm">Profile</a></li>
-							<li id="logoutlink"><a href="logout.cfm">Logout</a></li>
-						</ul> -->
+				</nav>
+			</header>
+			<div id="spinner" class="spinner" style="display:none;">
+				<img id="img-spinner" src="./images/spinner.gif" alt="Loading"/>
+			</div>
+			<section id="pages" class="group">
+				<div id="loadcontent" class="group">
+					<nav id="tabs">
 					</nav>
-				</header>
-				<div id="spinner" class="spinner" style="display:none;">
-					<img id="img-spinner" src="./images/spinner.gif" alt="Loading"/>
+					<section class="sectionlist show" id="inputarea">
+						<h2>Admin Sign In</h2>
+						<p>Please enter your pin</p>
+						<form name="adminsignin" id="adminsignin" action="swipelogin.cfm" method="POST">
+							<input type="password" class="rounded" name="adminpin" id="adminpin" placeholder="Enter PIN" title="PIN" required="required">
+							<br /><br />
+							<input type="submit" value="Sign In" name="adminpinbutton" id="adminpinbutton">
+						</form><br />
+					</section>
 				</div>
-				<section id="pages" class="group">
-					<div id="loadcontent" class="group">
-						<nav id="tabs">
-							<ul>
-								<li class="tapped" id="tabhome">Home</li>
-								<li  id="tabupdateprofile">Profile</li>
-							</ul>
-						</nav>
-						<section class="sectionlist show" id="inputarea">
-							<h2>Sign In</h2>
-							<p>Please Swipe Card</p>
-							<cfform name="adminsignin" action="updateprofile.cfm">
-								<input type="text" class="rounded" name="studentid" id="studentid" placeholder="Student ID" required="required">
-								<br /><br />
-								<input type="hidden" name="signinmethod" id="signinmethod" value="swipe">
-								<input type="submit" value="Sign In" name="signin" id="adminsigninbutton">
-								<input type="button" value="Manual Login" name="manualsignin" id="manualsigninbutton">
-							</cfform><br />
-						</section> <!-- Appetizers -->
-
-					</div> <!-- Load Content -->
-				</section> <!-- Pages-->
-				<footer class="group">
-					<p></p>
-					<nav id="bottomnav">
-					</nav>
-				</footer>
-
-				<!---<script src="//ajax.googleapis.com/ajax/libs/jquery/1.5.1/jquery.min.js"></script>
-				<script>window.jQuery || document.write("<script src='_/js/jquery-1.5.1.min.js'>\x3C/script>")</script>--->
-				<script src="_/js/functions.js"></script>
-			</body>
-			</html>
+			</section>
+			<footer class="group">
+				<p></p>
+				<nav id="bottomnav">
+				</nav>
+			</footer>
+			<script src="_/js/functions.js"></script>
+		</body>
+		</html>

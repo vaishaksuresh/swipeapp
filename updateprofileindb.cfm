@@ -80,6 +80,7 @@
                   <cfset session.yearinschool = #form.year# />
                   <cfset session.area_of_interest = #form.areaofinterest# />
                   <cfset session.newslettercheckbox = #newsletter# />
+                  <cfset session.message = "Profile Updated Successfuly" />
                   <CFLOCATION URL="updateprofile.cfm" ADDTOKEN="no"/>
                   <cfcatch type="Database">
                   <cfoutput>
