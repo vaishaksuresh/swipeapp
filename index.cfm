@@ -44,7 +44,7 @@
 		</head>
 		<body>
 			<cfif #IsUserLoggedIn()# eq 'YES'>
-				<cflocation url="updateprofile.cfm" addtoken="no" />
+				<cflocation url="reviewprofile.cfm" addtoken="no" />
 			</cfif>
 			<header></br>
 				<a href="/"><img src="./images/logo.jpg" alt="Mexsantos Logo" /></a>
@@ -60,8 +60,8 @@
 					<section class="sectionlist show" id="inputarea">
 						<h2>Sign In</h2>
 						<p>Please Enter Student ID and SJSU One Password</p>
-						<form name="signin" id="signin" action="updateprofile.cfm">
-							<input type="text" class="rounded" name="studentid" id="studentid" placeholder="Student ID" required="required"><br /><br />
+						<form name="signin" id="signin" action="reviewprofile.cfm">
+							<input type="text" class="rounded" name="studentid" id="studentid" placeholder="Student ID" required="required" maxlength="9"><br /><br />
 							<input type="password" class="rounded" name="studentpassword" id="studentpassword" placeholder="SJSU One Password" required="required"><br /><br />
 							<input type="hidden" name="signinmethod" id="signinmethod" value="manual">
 							<input type="submit" value="Sign In" name="signin" id="signinbutton">

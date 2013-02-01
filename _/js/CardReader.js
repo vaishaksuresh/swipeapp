@@ -7,7 +7,6 @@
  */
 
 var CardReader = function (error_start, track_start, track_end, timeout) {
-	console.log("Constructor Called");
 	this.error_start = error_start || "é";
 	this.track_start = track_start || ";";
 	this.track_end = track_end || "?";
@@ -129,7 +128,6 @@ CardReader.prototype = {
 	
 	observe: function (element) {
 		var func = this;
-		console.log("Observing");
 		$(element).keypress(function (e) {
 			CardReader.prototype.readObserver.apply(func, arguments);
 		});

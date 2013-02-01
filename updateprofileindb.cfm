@@ -81,7 +81,7 @@
                   <cfset session.area_of_interest = #form.areaofinterest# />
                   <cfset session.newslettercheckbox = #newsletter# />
                   <cfset session.message = "Profile Updated Successfuly" />
-                  <CFLOCATION URL="updateprofile.cfm" ADDTOKEN="no"/>
+                  <CFLOCATION URL="reviewprofile.cfm" ADDTOKEN="no"/>
                   <cfcatch type="Database">
                   <cfoutput>
                     <p>#cfcatch.message#</p>

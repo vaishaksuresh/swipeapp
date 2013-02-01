@@ -22,14 +22,14 @@ $(document).ready(function () {
         if ($.trim($('#studentid').val()).length > 0 && $.trim($('#studentpassword').val()).length > 0) {
             $.ajax({
                 type: 'POST',
-                url: 'updateprofile.cfm',
+                url: 'reviewprofile.cfm',
                 data: $('#signin').serialize(),
                 success: function (data, textStatus) {
                     $('#inputarea').replaceWith($('#formarea', $(data)));
                     $("#areaofinterest").change();
                 },
                 error: function (xhr, status, e) {
-                    alert(status, e);
+                    alert("An Error occurred trying to login. Please check the entered data and try again.");
                 }
             });
             //$("#signin").submit();
@@ -44,14 +44,14 @@ $(document).ready(function () {
         if ($.trim($('#studentid').val()).length > 0) {
             $.ajax({
                 type: 'POST',
-                url: 'updateprofile.cfm',
+                url: 'reviewprofile.cfm',
                 data: $('#swipesignin').serialize(),
                 success: function (data, textStatus) {
                     $('#inputarea').replaceWith($('#formarea', $(data)));
                     $("#areaofinterest").change();
                 },
                 error: function (xhr, status, e) {
-                    alert(status, e);
+                    alert("An Error occurred trying to login. Please check the entered data and try again.");
                 }
             });
             //$("#signin").submit();
@@ -72,7 +72,7 @@ $(document).ready(function () {
                     $('#inputarea').replaceWith($('#inputarea', $(data)));
                 },
                 error: function (xhr, status, e) {
-                    alert(status, e);
+                    alert("An Error occurred trying to login. Please check the entered data and try again.");
                 }
             });
             //$("#adminsignin").submit();
@@ -115,6 +115,7 @@ $(document).ready(function () {
         window.open('/cf/vaishak');
         return false;
     });
+    //Area of interest dropdown
     $("#areaofinterest").live("change", function () {
         if ($("#areaofinterest").val() == 'others') {
             $('#otherinterest').show();
@@ -126,6 +127,7 @@ $(document).ready(function () {
         $("#areaofinterest").change();
     });
 
+    //On Click of the button to update profile
     $("#updateprofilebutton").live('click', function (e) {
         e.preventDefault();
         if ($.trim($('#studentname').val()).length <= 0) {

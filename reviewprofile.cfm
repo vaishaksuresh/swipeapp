@@ -16,12 +16,9 @@
     <link rel="stylesheet" href="_/css/style.css">
     <script src="_/js/modernizr-1.7.min.js"></script>
     <link href='http://fonts.googleapis.com/css?family=Leckerli+One|Rokkitt:700,400|Luckiest+Guy' rel='stylesheet' type='text/css'>
-
     <script src="http://code.jquery.com/jquery-1.8.3.js"></script>
     <link rel="stylesheet" href="http://code.jquery.com/ui/1.9.2/themes/base/jquery-ui.css" />
     <script src="http://code.jquery.com/ui/1.9.2/jquery-ui.js"></script>
-
-
     <!-- Stylesheets -->
     <link rel="stylesheet" href="./_/css/style.css" />
     <link rel="stylesheet" href="./_/css/desktop.css" />
@@ -113,7 +110,7 @@
           VALUES ('#form.studentid#', '#session.email#', '#session.user#', '', '', '', NULL, 1, #Now()#, #Now()#, #Now()#, '#form.signinmethod#', 1, 1);
         </cfquery>
         <cfcatch type="any" >
-        <cfoutput>Error: The student ID is not present in our system or the university database. Please go <a href="javascript:window.history.back()">back</a> and verify the student ID.</cfoutput>
+        <cfoutput>Error: The student ID is not present. Please go <a href="index.cfm">back</a> and verify the student ID.</cfoutput>
         <cfabort>
       </cfcatch>
     </cftry>
@@ -172,57 +169,40 @@
   <h2>Greetings <cfoutput>, #session.user#</cfoutput></h2>
   <p>Review or Update your profile information</p>
   <cfif #isDefined("session.message")#>
-    <cfoutput><p>#session.message#</cfoutput>
-    <cfset #session.message# = "" />
-  </cfif>
-  <form name="updateprofile" id="updateprofile" action="updateprofile.cfm">
-    <input type="text" class="rounded" name="name" id="studentname" placeholder="Name" title="Name" value="<cfoutput>#session.user#</cfoutput>" required="required" readonly="readonly"/>
+    <cfoutput>
+      <p>
+        #session.message#</cfoutput></p>
+        <cfset #session.message# = "" />
+      </cfif>
+      <cfoutput>Name  : <cfif #session.user# neq ''>
+      #session.user#<cfelse> - 
+    </cfif></cfoutput>
     <br />
+    <cfoutput>Email : #session.email#</cfoutput>
     <br />
-    <!--- <input type="text" class="rounded" name="studentid" placeholder="Student ID" value="<cfoutput>#session.studentid#</cfoutput>"/> --->
-    <input type="text" class="rounded" name="email" id="email" placeholder="Email ID" title="Email Address" value="<cfoutput>#session.email#</cfoutput>"/>
-    <br />
-    <br />
-    <input type="text" class="rounded" name="phone" if="phon" title="Phone Number" placeholder="Phone Number" value="<cfoutput>#session.phone#</cfoutput>"/>
-    <br />
-    <br />
-    <input type="text" class="rounded" name="major" title="Major" placeholder="Major" value="<cfoutput>#session.major#</cfoutput>"/>
-    <br />
-    <br />
-    <!--- <input type="text" class="rounded" name="year" title="Year In School" placeholder="Year"/> --->
-    <select class="rounded" name="year" id = "yearinschool" title="Year In School">
-      <option value = "" selcted="selected">Select Year</option>
-      <option value = "freshman" <cfif #session.yearinschool# eq 'freshman'>selected='selected'</cfif>>Freshman</option>
-      <option value = "sophomore" <cfif #session.yearinschool# eq 'sophomore'>selected='selected'</cfif>>Sophomore</option>
-      <option value = "senior" <cfif #session.yearinschool# eq 'senior'>selected='selected'</cfif>>Senior</option>
-      <option value = "graduate" <cfif #session.yearinschool# eq 'graduate'>selected='selected'</cfif>>Graduate Student</option>
-    </select>
-    <br />
-    <br />
-    <select class="rounded" name="areaofinterest" id = "areaofinterest" title="Area of Interest">
-      <option value = "" selcted="selected">Select Area of Interest</option>
-      <option value = "fe" <cfif #session.area_of_interest# eq 'fe'>selected='selected'</cfif>>FE</option>
-      <option value = "strive" <cfif #session.area_of_interest# eq 'strive'>selected='selected'</cfif>>Strive</option>
-      <option value = "legacytours" <cfif #session.area_of_interest# eq 'legacytours'>selected='selected'</cfif>>Legacy Tours</option>
-      <option value = "volunteer" <cfif #session.area_of_interest# eq 'volunteer'>selected='selected'</cfif>>Volunteer</option>
-      <option value = "workshops" <cfif #session.area_of_interest# eq 'workshops'>selected='selected'</cfif>>Workshops</option>
-      <option value = "others" <cfif #session.area_of_interest# eq 'others'>selected='selected'</cfif>>Others</option>
-    </select>
-    <br />
-    <br />
-    <input type="text" class="rounded" name="otherinterest" id="otherinterest" title="Other Intestest" placeholder="Others"
-    value="<cfoutput>#session.other_interest#</cfoutput>" style="display:none;"/>
-    <br>
-    <br>
-    <input type="checkbox" name="newslettercheckbox" id="subscription" value="1" <cfif #session.newslettercheckbox# eq 1>checked='yes'</cfif> />
-    Subscribe to the newsletter <br />
-    <br />
-    <input type="submit"  value="Update" id="updateprofilebutton" name="updateprofile"/>
-    <input type="button"  value="Logout" name="logoutbutton" onClick="javascript:window.location.href='logout.cfm'" />
-  </form>
-  <cfelse>
-    <p>Entered Student ID and Password combination is invalid, please correct and <a href="index.cfm">login</a> again.</p>
-  </cfif>
+    <cfoutput>Phone : <cfif #session.phone# neq ''>
+    #session.phone#<cfelse> - 
+  </cfif></cfoutput>
+  <br />
+  <cfoutput>Major :  <cfif #session.major# neq ''>
+  #session.major#<cfelse> - 
+</cfif>
+</cfoutput>
+<br />
+<cfoutput>Year   : <cfif #session.yearinschool# neq ''>
+#session.yearinschool#<cfelse> - 
+</cfif></cfoutput>
+<br />
+<cfoutput>Area  : <cfif #session.area_of_interest# neq ''>
+#session.area_of_interest#<cfelse> - 
+</cfif>, #session.other_interest# </cfoutput>
+<br />
+<button onClick="javascript:window.location.href='updateprofile.cfm';" >Update Profile</button>
+<button onClick="javascript:window.location.href='logout.cfm';">Logout</button>
+<cfelse>
+  <p>Entered Student ID and Password combination is invalid, please correct and <a href="index.cfm">login</a> again.</p>
+</cfif>
+
 </section>
 </div>
 <!-- Load Content -->
