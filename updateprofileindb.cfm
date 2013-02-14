@@ -13,8 +13,8 @@
     <META HTTP-EQUIV="CACHE-CONTROL" CONTENT="NO-CACHE">
     <title>C.C.A.C Swipe Application</title>
     <meta name="viewport" content="width=device-width, maximum-scale=1.0" />
-    <link rel="stylesheet" href="_/css/style.css">
-    <script src="_/js/modernizr-1.7.min.js"></script>
+    <link rel="stylesheet" href="/cf/vaishak/_/css/style.css">
+    <script src="/cf/vaishak/_/js/modernizr-1.7.min.js"></script>
     <link href='http://fonts.googleapis.com/css?family=Leckerli+One|Rokkitt:700,400|Luckiest+Guy' rel='stylesheet' type='text/css'>
 
     <script src="http://code.jquery.com/jquery-1.8.3.js"></script>
@@ -23,19 +23,19 @@
 
 
     <!-- Stylesheets -->
-    <link rel="stylesheet" href="./_/css/style.css" />
-    <link rel="stylesheet" href="./_/css/desktop.css" />
+    <link rel="stylesheet" href="/cf/vaishak/_/css/style.css" />
+    <link rel="stylesheet" href="/cf/vaishak/_/css/desktop.css" />
     <!-- Target iPhone -->
-    <link rel="stylesheet" href="./_/css/handheld.css" media="(max-device-width:480px)" />
+    <link rel="stylesheet" href="/cf/vaishak/_/css/handheld.css" media="(max-device-width:480px)" />
     <!-- Target iPad -->
-    <link rel="stylesheet" href="./_/css/tablet.css" media="(min-device-width:768px) and (max-device-width:1024px)" />
+    <link rel="stylesheet" href="/cf/vaishak/_/css/tablet.css" media="(min-device-width:768px) and (max-device-width:1024px)" />
     <!-- Target Galaxy Tab -->
-    <link rel="stylesheet" href="./_/css/tablet.css" media="(min-width:1280px) and (max-width:1280px)" />
-    <link rel="stylesheet" href="./_/css/tablet.css" media="(min-width:800px) and (max-width:800px)" />
+    <link rel="stylesheet" href="/cf/vaishak/_/css/tablet.css" media="(min-width:1280px) and (max-width:1280px)" />
+    <link rel="stylesheet" href="/cf/vaishak/_/css/tablet.css" media="(min-width:800px) and (max-width:800px)" />
     <cfapplication sessionmanagement="yes" sessiontimeout="#CreateTimeSpan(0,0,30,0)#">
     </head>
     <body>
-      <header> <a href="/"><img src="./images/logo.jpg" alt="CCAC Logo" /></a>
+      <header> <a href="/"><img src="/cf/vaishak/images/logo.jpg" alt="CCAC Logo" /></a>
       <p>Cesar E. Chavez Community Action Center</p>
       <nav id="topnav"> </nav>
     </header>
@@ -81,7 +81,7 @@
                   <cfset session.area_of_interest = #form.areaofinterest# />
                   <cfset session.newslettercheckbox = #newsletter# />
                   <cfset session.message = "Profile Updated Successfuly" />
-                  <CFLOCATION URL="reviewprofile.cfm" ADDTOKEN="no"/>
+                  <CFLOCATION URL="/cf/vaishak/updateprofile.cfm" ADDTOKEN="no"/>
                   <cfcatch type="Database">
                   <cfoutput>
                     <p>#cfcatch.message#</p>
@@ -97,6 +97,6 @@
         <p></p>
         <nav id="bottomnav"> </nav>
       </footer>
-      <script src="_/js/functions.js"></script>
+      <script src="/cf/vaishak/_/js/functions.js"></script>
     </body>
     </html>

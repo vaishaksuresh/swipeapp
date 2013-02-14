@@ -1,5 +1,10 @@
 @import url("./handheld.css");
 
+body {
+	background-image: url(../../images/whitebg.jpg);
+	background-repeat: repeat;
+}
+
 #bottomnav .handheld {
 	display: none;
 }
@@ -8,6 +13,11 @@ header img {
 	width: 350px;
 	padding-bottom: 10px;
 }
+/* Hide Elements that area not necessary */
+ header p {
+	display: block;
+}
+
 
 .sectionlist {
 	width: 100%;
@@ -55,29 +65,3 @@ header img {
 }
 
 /* End Map Page */
-
-
-/* Start About us Page */
-
-#aboutus img {
-	width: 60%;
-	display: block;
-	margin: 0 auto;
-	float: none;
-	border: 10px solid #FFF;
-	padding:0;
-    -webkit-box-shadow:0 5px 10px #000;
-    -moz-box-shadow:0 5px 10px rgba(0, 0, 0, 0.7);
-    box-shadow:0 5px 10px rgba(0, 0, 0, 0.7);
-}
-
-#aboutus .content {
-	width: 60%;
-	float: none;
-	display: block;
-	margin: 0 auto;
-	padding-top: 20px	;
-	padding-bottom: 120px	;
-}
-
-/* End About us Page */

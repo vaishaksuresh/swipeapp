@@ -24,15 +24,15 @@ where login_activity.student_id=ccac_registered_users.student_id ">
 "cols": [
 {"id":"","label":"Student ID","pattern":"","type":"string"},
 {"id":"","label":"Name","pattern":"","type":"string"},
-{"id":"","label":"Login Count","pattern":"","type":"number"}
+{"id":"","label":"Login Count","pattern":"","type":"string"}
 ],
 "rows": [
 <cfloop query="getSwipeDate">
  <cfif #getSwipeDate.currentRow# neq #getSwipeDate.RecordCount#>
 
-   {"c":[{"v":<CFOUTPUT>"#getSwipeDate.studentid#"</CFOUTPUT>,"f":null},{"v":<CFOUTPUT>"#getSwipeDate.name#"</CFOUTPUT>,"f":null},{"v":<CFOUTPUT>#getSwipeDate.logincount#</CFOUTPUT>,"f":null}]},
+   {"c":[{"v":<CFOUTPUT>"#getSwipeDate.studentid#"</CFOUTPUT>,"f":null},{"v":<CFOUTPUT>"#getSwipeDate.name#"</CFOUTPUT>,"f":null},{"v":<CFOUTPUT>"#getSwipeDate.logincount#"</CFOUTPUT>,"f":null}]},
    <cfelse>
-    {"c":[{"v":<CFOUTPUT>"#getSwipeDate.studentid#"</CFOUTPUT>,"f":null},{"v":<CFOUTPUT>"#getSwipeDate.name#"</CFOUTPUT>,"f":null},{"v":<CFOUTPUT>#getSwipeDate.logincount#</CFOUTPUT>,"f":null}]}
+    {"c":[{"v":<CFOUTPUT>"#getSwipeDate.studentid#"</CFOUTPUT>,"f":null},{"v":<CFOUTPUT>"#getSwipeDate.name#"</CFOUTPUT>,"f":null},{"v":<CFOUTPUT>"#getSwipeDate.logincount#"</CFOUTPUT>,"f":null}]}
   </cfif>
 </cfloop>
 ]

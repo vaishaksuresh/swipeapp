@@ -5,7 +5,7 @@
 /* trigger when page is ready */
 $(document).ready(function () {
 
-    $(document).tooltip({
+    /*$(document).tooltip({
         position: {
             my: "center bottom-20",
             at: "center top",
@@ -15,28 +15,49 @@ $(document).ready(function () {
             }
         }
 
-    });
+    });*/
+	$(document).keypress(function(e) {
+    if(e.which == 13) {
+		$("#signinbutton").click();
+    }
+});
     // CLick action for the signinbutton
-    $("#signinbutton").click(function (e) {
+    $("#signinbutton").live('click',function (e) {
         e.preventDefault();
         if ($.trim($('#studentid').val()).length > 0 && $.trim($('#studentpassword').val()).length > 0) {
+			var intRegex = /[0-9 -()+]+$/;
+			if(!$.trim($('#studentid').val()).match(intRegex)){
+				$('#signinpagemessages').text("Student ID needs to be numbers only");
+            	$('#signinpagemessages').css('display', 'block');
+				return;
+			}
             $.ajax({
                 type: 'POST',
-                url: 'reviewprofile.cfm',
-                data: $('#signin').serialize(),
+                url: '/cf/vaishak/updateprofile.cfm',
+                data: $('#signinform').serialize(),
                 success: function (data, textStatus) {
-                    $('#inputarea').replaceWith($('#formarea', $(data)));
-                    $("#areaofinterest").change();
+					if(typeof $('#formarea', $(data)).val() != "undefined"){
+						$('#inputarea').replaceWith($('#formarea', $(data)));
+						$("#areaofinterest").change();
+						$('#user_session_box').html("Hello "+$('#studentname').val()+"|      <a href='/cf/vaishak/logout.cfm'><b>Logout</b></a>");
+					}else{
+					$('#inputarea').replaceWith($('#inputarea', $(data)));
+					}
                 },
                 error: function (xhr, status, e) {
-                    alert("An Error occurred trying to login. Please check the entered data and try again.");
+                    // $('#signinpagemessages').text("An Error occurred trying to login. Please check the entered data and try again."+ xhr.responseText);
+                    // $('#signinpagemessages').css('display', 'block');
                 }
             });
-            //$("#signin").submit();
         } else {
-            alert("One or more required field(s) missing.");
+            $('#signinpagemessages').text("One or more required field(s) missing.");
+            $('#signinpagemessages').css('display', 'block');
         }
     });
+	$('#signinform').submit(function() {
+		alert("Submitting");
+		$("#signinbutton").click();
+	});
 
     // CLick action for the admin signin- Without password and using swipe
     $("#adminsigninbutton").live("click", function (e) {
@@ -44,19 +65,23 @@ $(document).ready(function () {
         if ($.trim($('#studentid').val()).length > 0) {
             $.ajax({
                 type: 'POST',
-                url: 'reviewprofile.cfm',
+                // url: '/cf/vaishak/reviewprofile.cfm',
+                url: '/cf/vaishak/updateprofile.cfm',
                 data: $('#swipesignin').serialize(),
                 success: function (data, textStatus) {
                     $('#inputarea').replaceWith($('#formarea', $(data)));
                     $("#areaofinterest").change();
+					$('#user_session_box').html("Hello "+$('#studentname').val()+"|      <a href='/cf/vaishak/logout.cfm'><b>Logout</b></a>");
                 },
                 error: function (xhr, status, e) {
-                    alert("An Error occurred trying to login. Please check the entered data and try again.");
+                    $('#signinpagemessages').text("An Error occurred trying to login. Please check the entered data and try again.");
+                    $('#signinpagemessages').css('display', 'block');
                 }
             });
             //$("#signin").submit();
         } else {
-            alert("One or more required field(s) missing.");
+            $('#signinpagemessages').text("One or more required field(s) missing.");
+            $('#signinpagemessages').css('display', 'block');
         }
     });
 
@@ -66,39 +91,27 @@ $(document).ready(function () {
         if ($.trim($('#adminpin').val()).length > 0) {
             $.ajax({
                 type: 'POST',
-                url: 'swipelogin.cfm',
+                url: '/cf/vaishak/swipelogin.cfm',
                 data: $('#adminsignin').serialize(),
                 success: function (data, textStatus) {
                     $('#inputarea').replaceWith($('#inputarea', $(data)));
+                    $('#studentid').focus();
+					$('#user_session_box').html("<a href='/cf/vaishak/logout.cfm'><b>Logout</b></a>");
                 },
                 error: function (xhr, status, e) {
-                    alert("An Error occurred trying to login. Please check the entered data and try again.");
+                    $('#signinpagemessages').text("An Error occurred trying to login. Please check the entered data and try again.");
+                    $('#signinpagemessages').css('display', 'block');
                 }
             });
             //$("#adminsignin").submit();
         } else {
-            alert("PIN missing or Incorrect.");
+            $('#signinpagemessages').text("PIN is missing or incorrect");
+            $('#signinpagemessages').css('display', 'block');
         }
     });
-
-    // Click action for clicking the profile. Not Valid Anymore.
-    $('#profilelink').click(function (e) {
+    $('#adminsignin').submit(function (e) {
         e.preventDefault();
-        $.get('updateprofile.cfm', function (data) {
-            $('#inputarea').replaceWith($('#formarea', $(data)));
-        });
-    });
-
-    //Actions for Tabs on the handheld. Not valid Anymore
-    $('#tabupdateprofile').click(function (e) {
-        $.get('updateprofile.cfm', function (data) {
-            $('#inputarea').replaceWith($('#formarea', $(data)));
-        });
-    });
-    $('#tabhome').click(function (e) {
-        $.get('index.cfm', function (data) {
-            $('#formarea').replaceWith($('#inputarea', $(data)));
-        });
+        $("#adminpinbutton").click();
     });
 
     //Actions for displaying spinner when ajax calls are made.
@@ -112,7 +125,7 @@ $(document).ready(function () {
 
     //Click action for clicking the manual sign in button.
     $("#manualsigninbutton").live("click", function (e) {
-        window.open('/cf/vaishak');
+        window.open('/vaishak/FrontPage.jsp');
         return false;
     });
     //Area of interest dropdown
@@ -123,7 +136,8 @@ $(document).ready(function () {
             $('#otherinterest').hide();
         }
     });
-    $("#areaofinterest").on("click", function () {
+
+    $("#areaofinterest").live("click", function () {
         $("#areaofinterest").change();
     });
 
@@ -150,7 +164,7 @@ $(document).ready(function () {
         }
         $.ajax({
             type: 'POST',
-            url: 'updateprofileindb.cfm',
+            url: '/cf/vaishak/updateprofileindb.cfm',
             data: $('#updateprofile').serialize(),
             success: function (data, textStatus) {
                 $('#formarea').replaceWith($('#formarea', $(data)));
@@ -161,4 +175,9 @@ $(document).ready(function () {
             }
         });
     });
+$('#reviewUpdateButton').live('click', function (e) {
+    $('#formarea').load('/cf/vaishak/updateprofile.cfm #formarea');
+});
+
+
 });

@@ -13,26 +13,30 @@
     <META HTTP-EQUIV="CACHE-CONTROL" CONTENT="NO-CACHE">
     <title>C.C.A.C Swipe Application</title>
     <meta name="viewport" content="width=device-width, maximum-scale=1.0" />
-    <link rel="stylesheet" href="_/css/style.css">
-    <script src="_/js/modernizr-1.7.min.js"></script>
+    <link rel="stylesheet" href="/cf/vaishak_/css/style.css">
+    <script src="/cf/vaishak/_/js/modernizr-1.7.min.js"></script>
     <link href='http://fonts.googleapis.com/css?family=Leckerli+One|Rokkitt:700,400|Luckiest+Guy' rel='stylesheet' type='text/css'>
     <script src="http://code.jquery.com/jquery-1.8.3.js"></script>
     <link rel="stylesheet" href="http://code.jquery.com/ui/1.9.2/themes/base/jquery-ui.css" />
     <script src="http://code.jquery.com/ui/1.9.2/jquery-ui.js"></script>
     <!-- Stylesheets -->
-    <link rel="stylesheet" href="./_/css/style.css" />
-    <link rel="stylesheet" href="./_/css/desktop.css" />
+    <link rel="stylesheet" href="/cf/vaishak/_/css/style.css" />
+    <link rel="stylesheet" href="/cf/vaishak/_/css/desktop.css" />
     <!-- Target iPhone -->
-    <link rel="stylesheet" href="./_/css/handheld.css" media="(max-device-width:480px)" />
+    <link rel="stylesheet" href="/cf/vaishak/_/css/handheld.css" media="(max-device-width:480px)" />
     <!-- Target iPad -->
-    <link rel="stylesheet" href="./_/css/tablet.css" media="(min-device-width:768px) and (max-device-width:1024px)" />
+    <link rel="stylesheet" href="/cf/vaishak/_/css/tablet.css" media="(min-device-width:768px) and (max-device-width:1024px)" />
     <!-- Target Galaxy Tab -->
-    <link rel="stylesheet" href="./_/css/tablet.css" media="(min-width:1280px) and (max-width:1280px)" />
-    <link rel="stylesheet" href="./_/css/tablet.css" media="(min-width:800px) and (max-width:800px)" />
+    <link rel="stylesheet" href="/cf/vaishak/_/css/tablet.css" media="(min-width:1280px) and (max-width:1280px)" />
+    <link rel="stylesheet" href="/cf/vaishak/_/css/tablet.css" media="(min-width:800px) and (max-width:800px)" />
     <cfapplication sessionmanagement="yes" sessiontimeout="#CreateTimeSpan(0,0,30,0)#">
     </head>
     <body>
-      <header> <a href="/"><img src="./images/logo.jpg" alt="CCAC Logo" /></a>
+    
+    <div id="user_session_box">
+        Hello Admin |      <a href="../controller/LogoutController.php"><b>Logout</b></a>
+    </div>
+      <header> <!--- <a href="/"><img src="/cf/vaishak/images/logo.jpg" alt="CCAC Logo" /></a> --->
       <p>Cesar E. Chavez Community Action Center</p>
       <nav id="topnav"> </nav>
     </header>
@@ -110,7 +114,7 @@
           VALUES ('#form.studentid#', '#session.email#', '#session.user#', '', '', '', NULL, 1, #Now()#, #Now()#, #Now()#, '#form.signinmethod#', 1, 1);
         </cfquery>
         <cfcatch type="any" >
-        <cfoutput>Error: The student ID is not present. Please go <a href="index.cfm">back</a> and verify the student ID.</cfoutput>
+        <cfoutput>Error: The student ID is not present. Please go <a href="/vaishak/FrontPage.jsp">back</a> and verify the student ID.</cfoutput>
         <cfabort>
       </cfcatch>
     </cftry>
@@ -171,36 +175,74 @@
   <cfif #isDefined("session.message")#>
     <cfoutput>
       <p>
-        #session.message#</cfoutput></p>
+        #session.message#</p></cfoutput>
         <cfset #session.message# = "" />
       </cfif>
-      <cfoutput>Name  : <cfif #session.user# neq ''>
-      #session.user#<cfelse> - 
-    </cfif></cfoutput>
-    <br />
-    <cfoutput>Email : #session.email#</cfoutput>
-    <br />
-    <cfoutput>Phone : <cfif #session.phone# neq ''>
-    #session.phone#<cfelse> - 
-  </cfif></cfoutput>
-  <br />
-  <cfoutput>Major :  <cfif #session.major# neq ''>
-  #session.major#<cfelse> - 
-</cfif>
-</cfoutput>
-<br />
-<cfoutput>Year   : <cfif #session.yearinschool# neq ''>
-#session.yearinschool#<cfelse> - 
-</cfif></cfoutput>
-<br />
-<cfoutput>Area  : <cfif #session.area_of_interest# neq ''>
-#session.area_of_interest#<cfelse> - 
-</cfif>, #session.other_interest# </cfoutput>
-<br />
-<button onClick="javascript:window.location.href='updateprofile.cfm';" >Update Profile</button>
-<button onClick="javascript:window.location.href='logout.cfm';">Logout</button>
+      
+      <div id="info_div">      
+        <table id="rounded-corner">
+          <thead>
+            <tr>
+              <th class="rounded-topleft" scope="col"></th>
+              <th class="rounded-topright" scope="col"></th>
+            </tr>
+          </thead>
+          <tfoot>
+            <tr>
+              <td class="rounded-foot-left">
+                <em></em>
+              </td>
+              <td class="rounded-foot-right"> </td>
+            </tr>
+          </tfoot>
+          <tbody>
+            <tr>
+              <td>Name</td>
+              <td><cfoutput><cfif #session.user# neq ''>
+              #session.user#<cfelse> - 
+            </cfif></cfoutput></td>
+          </tr>
+          <tr>
+            <td>Email</td>
+            <td><cfoutput>#session.email#</cfoutput></td>
+          </tr>
+          <tr>
+            <td>Phone</td>
+            <td><cfoutput><cfif #session.phone# neq ''>
+            #session.phone#<cfelse> - 
+          </cfif></cfoutput></td>
+        </tr>
+        <tr>
+          <td>Major</td>
+          <td><cfoutput><cfif #session.major# neq ''>
+          #session.major#<cfelse> - 
+        </cfif>
+      </cfoutput></td>
+    </tr>
+    <tr>
+      <td>Year in school</td>
+      <td><cfoutput><cfif #session.yearinschool# neq ''>
+      #session.yearinschool#<cfelse> - 
+    </cfif></cfoutput></td>
+  </tr>
+  <tr>
+    <td>Area of Interest</td>
+    <td><cfoutput><cfif #session.area_of_interest# neq ''>
+    #session.area_of_interest#<cfelse> - 
+  </cfif><cfif #session.other_interest# neq ''>
+  , #session.other_interest# 
+</cfif></cfoutput></td>
+</tr>
+</tbody>
+</table>
+
+
+
+</div>
+<img src="/cf/vaishak/images/update.png" id="reviewUpdateButton">
+<img id="logoutbutton" name="logoutbutton" src="/cf/vaishak/images/logout.png" onClick="javascript:window.location.href='/cf/vaishak/logout.cfm'"/>
 <cfelse>
-  <p>Entered Student ID and Password combination is invalid, please correct and <a href="index.cfm">login</a> again.</p>
+  <p>Entered Student ID and Password combination is invalid or the session has expired, please correct and <a href="/vaishak/FrontPage.jsp">login</a> again.</p>
 </cfif>
 
 </section>
@@ -214,6 +256,6 @@
 </footer>
 <!--- <script src="//ajax.googleapis.com/ajax/libs/jquery/1.5.1/jquery.min.js"></script>
 <script>window.jQuery || document.write("<script src='_/js/jquery-1.5.1.min.js'>\x3C/script>")</script>--->
-<script src="_/js/functions.js"></script>
+<script src="/cf/vaishak/_/js/functions.js"></script>
 </body>
 </html>

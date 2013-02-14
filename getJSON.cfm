@@ -1,4 +1,8 @@
 <cfset basicquery= "Select login_mode,count(login_mode) as total from login_activity,ccac_registered_users where login_activity.student_id=ccac_registered_users.student_id ">
+
+<cfif #StructKeyExists(url,'studentid')# AND #url['studentid']# neq ''>
+  <cfset basicquery = #basicquery#&"AND login_activity.student_id = #studentid# "  />
+</cfif>
 <cfif #StructKeyExists(url,'startDate')# AND #url['startDate']# neq ''>
   <cfset basicquery = #basicquery#&"AND login_date >= STR_TO_DATE('#DateFormat(CreateODBCDate(startDate),'mm/dd/yyyy')#','%m/%d/%Y')"  />
 </cfif>
@@ -7,7 +11,6 @@
 </cfif>
 
 <cfset basicquery = #basicquery#&" GROUP BY login_mode"/>
-<cfset sqlquery = "Select login_mode,count(login_mode) as total from login_activity,ccac_registered_users where login_activity.student_id=ccac_registered_users.student_id GROUP BY login_mode">
 <cftry>
   <cfquery name="getAllUsers" datasource="cccac_swipe" result="UserDetailsResult">
   <cfoutput>#preserveSingleQuotes(basicquery)#</cfoutput>

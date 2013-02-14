@@ -54,28 +54,27 @@
     function drawChart() {
       $.ajax({
         url: "getJSON.cfm",
-        data: "startDate="+$("#startDateText").val()+"&endDate="+$("#endDate").val(),
-        //data: "startDate=01/16/2013&endDate=01/23/2013",
+        data: "startDate="+$("#startDateText").val()+"&endDate="+$("#endDate").val()+"&studentid="+$("#selectedstudent").val(),
         dataType: "json",
         success: function (jsonData) {
-          // if (!$.browser.msie) {
-          //   console.log(jsonData);
-          // }
-            // Create our data table out of JSON data loaded from server. 
-            var data = new google.visualization.DataTable(jsonData);
+          var data = new google.visualization.DataTable(jsonData);
+          var options = {'title':'Sign-in Method Breakdown',
+          'width':300,
+          'height':200,
+          'position':'absolute',
+          pieSliceText: 'value',
+          is3D:true,
+          'chartArea.width':360};
 
-            // Instantiate and draw our chart, passing in some options. 
-            var chart = new google.visualization.PieChart(document.getElementById('chart_div'));
-            chart.draw(data, {
-              pieSliceText: 'value'
-            });
-          },
-          error: function (jqXHR, textStatus, errorThrown) {
-            // if (!$.browser.msie) {
-            //   console.log(jqXHR);
-            // }
+          var chart = new google.visualization.PieChart(document.getElementById('chart_div'));
+          chart.draw(data, options);
+        },
+        error: function (jqXHR, textStatus, errorThrown) {
+          if (!$.browser.msie) {
+            console.log(jqXHR);
           }
-        });
+        }
+      });
     } 
 
     google.load('visualization', '1', {packages:['table']});
@@ -84,50 +83,80 @@
      $.ajax({
       url: "getJSONwithDetails.cfm",
       data: "startDate="+$("#startDateText").val()+"&endDate="+$("#endDate").val(),
-        //data: "startDate=01/16/2013&endDate=01/23/2013",
-        dataType: "json",
-        success: function (jsonData) {
-          // if (!$.browser.msie) {
-          //   console.log(jsonData);
-          // }
-            // Create our data table out of JSON data loaded from server. 
-            var data = new google.visualization.DataTable(jsonData);
+      dataType: "json",
+      success: function (jsonData) {
+       data = new google.visualization.DataTable(jsonData);
+       options = {'width':500
+     };
+     table = new google.visualization.Table(document.getElementById('table_div'));
+     table.draw(data,options);
 
-            // Instantiate and draw our chart, passing in some options. 
-            var table = new google.visualization.Table(document.getElementById('table_div'));
-            table.draw(data, {showRowNumber: true});
-          },
-          error: function (jqXHR, textStatus, errorThrown) {
-            // if (!$.browser.msie) {
-            //   console.log(jqXHR);
-            // }
-          }
-        });
-
-
+     google.visualization.events.addListener(table, 'select', selectHandler);
+   },
+   error: function (jqXHR, textStatus, errorThrown) {
+    if (!$.browser.msie) {
+      console.log(jqXHR);
+    }
+  }
+});
    }
+   // The selection handler.
+// Loop through all items in the selection and concatenate
+// a single message from all of them.
+function selectHandler() {
+  var selection = table.getSelection();
+  var message = '';
+  for (var i = 0; i < selection.length; i++) {
+    var item = selection[i];
+    if (item.row != null && item.column != null) {
+      var str = data.getFormattedValue(item.row, item.column);
+      message +=  str + '\n';
+    } else if (item.row != null) {
+      var str = data.getFormattedValue(item.row, 0);
+      message += str + '\n';
+    } else if (item.column != null) {
+      var str = data.getFormattedValue(0, item.column);
+      message +=  str + '\n';
+    }
+  }
+  if (message == '') {
+    message = 'nothing';
+  }
+  $('#selectedstudent').val(message);
+  drawChart();
+}
 
-   $(document).ready(function() {
-    $("#startDateText").datepicker();
-    $("#endDate").datepicker();
-    $("#generateReportButton").click(function(e){
-      e.preventDefault();
-      drawChart();
-      drawTable();
-    });
-
-    $('#startDateText, #endDate').change(function(){
-      drawChart();
-      drawTable();
-    });
-
+$(document).ready(function() {
+  $("#startDateText").datepicker();
+  $("#endDate").datepicker();
+  $("#generateReportButton").click(function(e){
+    e.preventDefault();
+    drawChart();
+    drawTable();
   });
 
-   </script>
+  $('#startDateText, #endDate').change(function(){
+    drawChart();
+    drawTable();
+  });
+
+  $('#resetReportButton').click(function(){
+    $("#startDateText").val("");
+    $("#endDate").val("");
+    $("#selectedstudent").val("");
+    drawChart();
+    drawTable();
+  });
+
+  // $(window).bind('resize', function() { location.reload(); }); 
+
+});
+
+</script>
 
 
- </head>
- <body>
+</head>
+<body>
   <header> <a href="/"><img src="./images/logo.jpg" alt="CCAC Logo" /></a>
   <p>Cesar E. Chavez Community Action Center</p>
   <nav id="topnav"> </nav>
@@ -140,7 +169,8 @@
       <form name="generateReportForm">
         <input type="text" class="rounded" name="startDate" id="startDateText" placeholder="Start Date" title="Start Date" ><br /><br />
         <input type="text" class="rounded" name="endDate" id="endDate" placeholder="End Date" title="End Date"><br /><br />
-        <!---  <input type="submit" value="Generate Report" name="generateReportButton" id="generateReportButton"> --->
+        <input type="hidden" id="selectedstudent" value="">
+        <input type="button" value="Reset" name="resetReportButton" id="resetReportButton">
       </form><br />
 
       <div id="chart_div"></div><br>

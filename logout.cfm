@@ -8,10 +8,10 @@
 <cfcookie name="CFTOKEN" value="deleted" expires="NOW"/>
 <cfif #forwardpath# eq 'manual'>
   <cfset session.isadmin = "false">
-  <cflocation url="index.cfm" addtoken="no"/>
+  <cflocation url="/vaishak/FrontPage.jsp" addtoken="no"/>
   <cfelseif #forwardpath# eq 'swipe' >
-  <cflocation url="swipelogin.cfm" addtoken="no"/>
+  <cflocation url="/vaishak/AdminFrontPage.jsp" addtoken="no"/>
   <cfelse>
   <cfset session.isadmin = "false">
-  <cflocation url="adminlogin.cfm" addtoken="no"/>
+  <cflocation url="/vaishak/AdminFrontPage.jsp" addtoken="no"/>
 </cfif>
