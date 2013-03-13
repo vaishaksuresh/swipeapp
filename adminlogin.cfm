@@ -32,21 +32,18 @@
 <cfapplication sessionmanagement="yes" sessiontimeout="#CreateTimeSpan(0,0,30,0)#">
 </head>
 <body>
+<cfinclude template="messages.cfm">
 <div id="user_session_box">
   <!--- Hello Admin | <a href="/cf/vaishak/logout.cfm"><b>Logout</b></a> --->
 </div>
 <cfif #IsUserLoggedIn()# eq 'YES'>
   <cflocation url="/cf/vaishak/updateprofile.cfm" addtoken="no" />
 </cfif>
-</br>
-</br>
 <div class="bgCover">&nbsp;</div>
 <cfif #isDefined("session.isadmin")# AND #session.isadmin# eq "true">
   <cflocation url="/cf/vaishak/swipelogin.cfm" addtoken="false"/>
 </cfif>
-<div id="header">
-  <p>Cesar E. Chavez Community Action Center</p>
-</div>
+<div id="header"> </div>
 <div id="spinner" class="spinner" style="display:none;"> <img id="img-spinner" src="/cf/vaishak/images/spinner.gif" alt="Loading"/> </div>
 <section id="pages" class="group">
   <div id="loadcontent" class="group">
@@ -54,13 +51,35 @@
     <section class="sectionlist show" id="inputarea">
       <h2>Admin Sign In</h2>
       <p>Please enter your pin</p>
-      <div id="signinpagemessages" style="display:none;"></div>
+      <div id="message_box">
+        <cfif #isDefined("session.message")#>
+          <cfoutput> #session.message#</cfoutput>
+          <cfset #session.message# = "" />
+        </cfif>
+      </div>
       <form name="adminsignin" id="adminsignin" action="#" method="POST">
-        <input type="password" class="rounded" name="adminpin" id="adminpin" placeholder="Enter PIN" title="PIN" required="required">
+        <input type="password" class="rounded_login" name="adminpin" id="adminpin" placeholder="Enter PIN" title="PIN" required="required">
         <br />
         <br />
-        <!--- <input type="submit" value="Sign In" name="adminpinbutton" id="adminpinbutton"> --->
-        <img id="adminpinbutton" name="adminpinbutton" src="/cf/vaishak/images/login.png"/>
+        <input type="checkbox" name="event" id="eventradio">
+        Select or Add Event <br />
+        <br />
+        <div class="event_box" id="event_border_box" style="display:none;">
+        <cfinvoke component="cfcomponents.utilComponent" method="getEventsForToday" returnvariable="eventsList"> </cfinvoke>
+        <cfif #eventsList.RecordCount# gt 0>
+          <select name="chosenEventId" class="rounded" id="eventnameSelect" style="display:none;text-align:center">
+	          <option value="">Select an Event</option>
+            <cfloop query="eventsList">
+              <option value="<cfoutput>#eventsList.event_id#</cfoutput>"><cfoutput>#eventsList.event_name#</cfoutput></option>
+            </cfloop>
+          </select>
+          <p id="ortext" style="display:none;">OR</p>
+        </cfif>
+        <input type="text" class="rounded_login" name="eventname" id="eventname" placeholder="Add A New Event" style="display:none;">
+        <br />
+        </div>
+        <!---<div id="adminpinbutton" name="adminpinbutton" class="blue_button">Sign In</div>--->
+        <input type="button" class="blue_button" id="adminpinbutton" value="Sign In">
       </form>
       <br />
     </section>

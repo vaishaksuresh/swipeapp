@@ -31,20 +31,21 @@
 <cfapplication sessionmanagement="yes" sessiontimeout="#CreateTimeSpan(0,0,30,0)#">
 </head>
 <body>
+<cfinclude template="messages.cfm">
 <div id="user_session_box">
-<cfif #isDefined("session.isadmin")# AND #session.isadmin# eq "true">
-  <cfoutput>Hello Admin | <a href="/cf/vaishak/logout.cfm"><b>Logout</b></a></cfoutput>
-</cfif>
+  <cfif #isDefined("session.isadmin")# AND #session.isadmin# eq "true">
+    <cfoutput>
+      <input type="button" class='logout_button' id='logout_button' value="Logout">
+      <input typ="button" class="logout_button" id="manualsigninbutton" value="Manual Signin">
+    </cfoutput>
+  </cfif>
 </div>
 <cfif #IsUserLoggedIn()# eq 'YES'>
   <cflocation url="/cf/vaishak/updateprofile.cfm" addtoken="no" />
 </cfif>
 </br>
 </br>
-<div id="header">
-  <p>Cesar E. Chavez Community Action Center</p>
-  <nav id="topnav"> </nav>
-</div>
+<div id="header"> </div>
 <div id="spinner" class="spinner" style="display:none;"> <img id="img-spinner" src="/cf/vaishak/images/spinner.gif" alt="Loading"/> </div>
 <section id="pages" class="group">
   <div id="loadcontent" class="group">
@@ -52,48 +53,53 @@
       <cfif (#isDefined("form.adminpin")# AND #form.adminpin# eq '123456') OR (#isDefined("session.isadmin")# AND #session.isadmin# eq "true")>
         <cfset session.isadmin = "true">
         <cfset session.signinmethod = "admin">
+        <cfif #StructKeyExists(form,"chosenEventId")# AND #form.chosenEventId# neq "">
+          <cfset session.eventid = #form.chosenEventId#>
+        </cfif>
+        <cfif #StructKeyExists(form,"eventname")# AND #form.eventname# neq "">
+          <cfinvoke component="cfcomponents.utilComponent" method="addNewEvent" returnvariable="eventID">
+          <cfinvokeargument name="eventName" value="#form.eventname#">
+          </cfinvoke>
+          <cfset eventID = "">
+          <cfquery name="getEventId" datasource="cccac_swipe">
+   			SELECT LAST_INSERT_ID() as event
+   		  </cfquery>
+          <cfset session.eventid = #getEventId.event#>
+        </cfif>
         <p>Please Swipe Card</p>
         <div id="signinpagemessages" style="display:none;"></div>
         <form name="swipesignin" id="swipesignin" method="POST">
-          <input type="text" class="rounded" name="studentid" id="studentid" placeholder="Swipe Card" title="Swipe Card" required="required" readonly="readonly" >
+          <input type="text" class="rounded_login" name="studentid" id="studentid" placeholder="Swipe Card" title="Swipe Card" required="required" readonly="readonly" >
           <br />
           <br />
           <input type="hidden" name="signinmethod" id="signinmethod" value="swipe">
-          <!--- <input type="button" value="Sign In" name="signin" id="adminsigninbutton"> --->
           <img id="adminsigninbutton" name="adminsigninbutton" src="/cf/vaishak/images/login.png" style="display:none;"/>
-          <!--- <input type="button" value="Manual Login" name="manualsignin" id="manualsigninbutton"> --->
-          <img id="manualsigninbutton" name="manualsigninbutton" src="/cf/vaishak/images/manual_sign_in.png"/>
-          <!--- <input type="button"  value="Logout" name="logoutbutton" onClick="javascript:window.location.href='/cf/vaishak/logout.cfm'" /> --->
-          <!---<img id="logoutbutton" name="logoutbutton" src="/cf/vaishak/images/logout.png" onClick="javascript:window.location.href='/cf/vaishak/logout.cfm'"/>--->
         </form>
         <br />
         <cfelse>
-        <CFLOCATION URL="/homepage_updates/AdminFrontPage.jsp" ADDTOKEN="no" />
+        <CFLOCATION URL="/cf/vaishak/logout.cfm" ADDTOKEN="no" />
       </cfif>
     </section>
   </div>
 </section>
-<footer class="group">
-  <p></p>
-  <nav id="bottomnav"> </nav>
-</footer>
+<footer class="group"> </footer>
 <script src="/cf/vaishak/_/js/functions.js"></script>
 <script type="text/javascript" charset="utf-8" src="/cf/vaishak/_/js/CardReader.js"></script>
 <script type="text/javascript">
-				jQuery(function () {
-					$('#studentid').focus();
-					var reader = new CardReader();
-					reader.observe(document);
-					reader.cardError(function () {
-						alert("A read error occurred");
-					});
-					reader.cardRead(function (value) {
-						$('#studentid').val(value);
-						$('#studentid').val($('#studentid').val().substr(0, 9));
-						$('#adminsigninbutton').click();
-					});
+jQuery(function () {
+	$('#studentid').focus();
+	var reader = new CardReader();
+	reader.observe(document);
+	reader.cardError(function () {
+		alert("A read error occurred");
+	});
+	reader.cardRead(function (value) {
+		$('#studentid').val(value);
+		$('#studentid').val($('#studentid').val().substr(0, 9));
+		$('#adminsigninbutton').click();
+	});
 
-				});
-				</script>
+});
+</script>
 </body>
 </html>

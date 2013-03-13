@@ -1,10 +1,10 @@
 <cfset basicquery= "Select distinct(login_activity.student_id) as studentid,name,count(login_activity.student_id) as logincount
 from login_activity,ccac_registered_users 
 where login_activity.student_id=ccac_registered_users.student_id ">
-<cfif #StructKeyExists(url,'startDate')# AND #url['startDate']# neq ''>
+<cfif #StructKeyExists(url,'startDate')# AND #url['startDate']# neq '' AND #url['startDate']# neq 'undefined'>
   <cfset basicquery = #basicquery#&"AND login_date >= STR_TO_DATE('#DateFormat(CreateODBCDate(startDate),'mm/dd/yyyy')#','%m/%d/%Y')"  />
 </cfif>
-<cfif #StructKeyExists(url,'endDate')# AND #url['endDate']# neq ''>
+<cfif #StructKeyExists(url,'endDate')# AND #url['endDate']# neq ''  AND #url['endDate']# neq 'undefined'>
   <cfset basicquery = #basicquery#&" AND login_date <= STR_TO_DATE('#DateFormat(CreateODBCDate(endDate),'mm/dd/yyyy')#','%m/%d/%Y') + INTERVAL 1 DAY "  />
 </cfif>
 
@@ -20,11 +20,15 @@ where login_activity.student_id=ccac_registered_users.student_id ">
 </cfoutput>
 </cfcatch>
 </cftry>
+<cfset totalSwipes = 0>
+<cfloop query="getSwipeDate">
+<cfset totalSwipes = #totalSwipes#+#getSwipeDate.logincount#>
+</cfloop>
 {
 "cols": [
-{"id":"","label":"Student ID","pattern":"","type":"string"},
+{"id":"","label":"User ID (Total Users: <cfoutput>#getSwipeDate.RecordCount#</cfoutput>)","pattern":"","type":"string"},
 {"id":"","label":"Name","pattern":"","type":"string"},
-{"id":"","label":"Login Count","pattern":"","type":"string"}
+{"id":"","label":"Login Count (Total: <cfoutput>#totalSwipes#</cfoutput>)","pattern":"","type":"string"}
 ],
 "rows": [
 <cfloop query="getSwipeDate">

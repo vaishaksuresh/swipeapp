@@ -1,64 +1,159 @@
 body {
-	/*	background: url(../../images/background_wood.jpg);*/
-	background-color:rgb(000, 0, fff);
+/*	background-color:#D8E9FE;*/
+    background-color:#FFF;
 	font-family: Rokkitt, 'Times New Roman', serif;
-	/*	
-	background-image: url(../../images/whitebg.jpg);
-	background-repeat: repeat;*/
 }
-/* Start Header */
-
-header {
-	width: 100%;
+#user_session_box{
+    color: #444444;
+	color: #FFF;
+	font-family: "Lucida Sans Unicode", "Lucida Grande", Sans-Serif;
+    font-size: 10pt;
+    min-height: 33px;
+    text-align: right;
+	margin: 0 -15px 0 -5px;
+	box-shadow: 1px 3px 19px rgba(0, 0, 0, 0.2) inset;
+	-moz-box-shadow: 1px 3px 19px rgba(0, 0, 0, 0.2) inset;
+	-webkit-box-shadow: 1px 3px 19px rgba(0, 0, 0, 0.2) inset;
+	}
+#user_greetings{
+	margin:0 0 0 70%;
+	padding:7px; 
+	float:left;/*float could be causing the problem of overlaping bar on tablet*/
+	font-size:10pt;	
+	}
+	
+.logout_button {
+	width: auto;
+	height: auto;
+	color: #FFF;
+	font-family: "Lucida Sans Unicode", "Lucida Grande", Sans-Serif;
+	font-size: 10pt;
+	font-weight: bolder;
+	-moz-border-radius: 6px;
+	-webkit-border-radius: 6px;
+	border-radius: 6px;
+	float: right;/*float could be causing the problem of overlaping bar on tablet*/
+	margin: 4px 15px;
+	border: 1px solid #B5B5B5;
 	text-align: center;
-	background-color: #F0F0F0;
-	margin: 10px auto 0px auto;
-	padding-bottom: 10px;
-	box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.2) inset;
-	-moz-box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.2) inset;
-	-webkit-box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.2) inset;
+	padding: 1px 5px 4px 5px;
+	background-image:url(../../images/graybar.png);
+	cursor: default;
 }
-#header p {
-	font: normal 2.3em/1.5em Helvetica, Arial, sans-serif;
-	color: #ccc;
-	text-shadow: 1px 1px white, -1px -1px #444;
-	font-weight:bold;
+.logout_button:hover {
+	opacity: 0.7;
 }
-#header img {
-	display: block;
-	max-width: 400px;
-	margin: 5px auto 5px auto;
-	-webkit-border-radius: 12px;
-	border: 0px;
-	border-radius: 12px;
-	-moz-background-clip: padding;
-	-webkit-background-clip: padding-box;
-	background-clip: padding-box;
-	-webkit-box-shadow: 0px 0px 4px 0px #ffffff;
-	box-shadow: 0px 0px 4px 0px #ffffff;
+#header {
+	border: solid 5px #E9E9E9;
+	-moz-border-radius: 15px;
+	-webkit-border-radius: 15px;
+	border-radius: 15px;
+	width: 525px;
+    height: 170px;
+	margin: 3% auto 0% auto;
+	background: url("../../images/cesar_chavez.png") no-repeat scroll center center transparent;
 }
-#header nav {
-	margin: 18px 0;
-	/*	border-bottom: 4px solid #000;*/
-	padding-bottom: 5px;
+/*This header works with mobile but doesn't look so good with desktop/tablet*/
+/*#header {
+    background: url("../../images/cesar_chavez.png") no-repeat scroll center center transparent;
+    border: thin solid #DDDDDD;
+    height: 170px;
+    margin: 3% 8%;
+    padding: 10px;
+    text-align: center;
+}*/
+input.rounded_login {
+	border: 1px solid #ccc;
+	-moz-border-radius: 10px;
+	-webkit-border-radius: 10px;
+	border-radius: 10px;
+	-moz-box-shadow: 0px 2px 10px #CCC inset;
+	-webkit-box-shadow: 0px 2px 10px #CCC inset;
+	box-shadow: 0px 2px 10px #CCC inset;
+	font-size: 20px;
+	padding: 4px 8px 4px 8px;
+	outline: 0;
+	-webkit-appearance: none;
+	width: 260px;
+	text-align: center;
 }
-#header li {
-	display: inline;
-	border-right: 1px solid #000;
+input.rounded_login:focus {
+	border-color: #deb408;
 }
-#header li:last-child {
-	border-right:none;
+input.rounded {
+	border: 1px solid #ccc;
+	-moz-border-radius: 10px;
+	-webkit-border-radius: 10px;
+	border-radius: 10px;
+	-moz-box-shadow: 0px 2px 10px #CCC inset;
+	-webkit-box-shadow: 0px 2px 10px #CCC inset;
+	box-shadow: 0px 2px 10px #CCC inset;
+	font-size: 20px;
+	padding: 4px 8px 4px 8px;
+	outline: 0;
+	-webkit-appearance: none;
+	width: 260px;
+/*	text-align: center; This doesnt look good on desktop version*/ 
 }
-#header nav li a {
-	font-size: 1.8em;
-	color: #A21;
-	text-decoration: none;
-	padding: 0 10px;
+input.rounded:focus {
+	border-color: #deb408;
 }
-#header nav li a:hover {
-	color: #E41;
+.blue_button {
+	width: 130px;
+	height: auto;
+	padding: 6px;
+	margin: 0% auto 0% auto;
+	background-image:url(../../images/bluebar5.png);
+	color: #FFF;
+	text-align: center;
+	font-family: "Lucida Sans Unicode", "Lucida Grande", Sans-Serif;
+	font-size: 14pt;
+	font-weight: bolder;
+	border: none;
+	-moz-border-radius: 10px;
+	-webkit-border-radius: 10px;
+	border-radius: 10px;
+	cursor: default;
+	}
+.blue_button:hover {
+	opacity: 0.7;
 }
-/* End Header */
+/*#signinbutton {
+	width: 130px;
+	height: auto;
+	padding: 8px;
+	margin: 0% auto 20% auto;
+	background-image:url(../../images/bluebar5.png);
+	color: #FFF;
+	text-align: center;
+	font-family: "Lucida Sans Unicode", "Lucida Grande", Sans-Serif;
+	font-size: 14pt;
+	font-weight: bolder;
+	-moz-border-radius: 10px;
+	-webkit-border-radius: 10px;
+	border-radius: 10px;
+	cursor: default;
+	}*/
+#message_box {
+	font-size: 14px;
+	width: 260px;
+	height: auto;
+	text-align: center;
+	margin: -15px auto 10px auto;
+	color: #F00;
+	}
+#message_green {
+	font-size: 14px;
+	width: 260px;
+	height: auto;
+	text-align: center;
+	margin: -15px auto 10px auto;
+	color: #060;
+	}
+#subscribe_box {
+    font-size: 14pt;
+    margin: 3% 0;
+}
 /* Start Footer */
 
 footer {
@@ -100,9 +195,10 @@ footer nav li a:hover {
 }
 .sectionlist {
 	width: auto;
-	margin-right: auto;
-	margin-left: auto;
+	margin: 0 auto;
 	text-align:center;
+	height: auto;
+/*	background-color: #FFF;*/
 }
 /*.sectionlist img {
 	width: 80px;
@@ -140,6 +236,7 @@ footer nav li a:hover {
 	font-weight: bold;
 	font-style: italic;
 	color: #000;
+	font-size: 12pt;
 }
 .sectionlist li {
 	padding: 10px;
@@ -177,42 +274,7 @@ footer nav li a:hover {
 .sectionlist li:hover .photoname {
 	color: #A21;
 }
-input.rounded {
-	border: 1px solid #ccc;
-	-moz-border-radius: 10px;
-	-webkit-border-radius: 10px;
-	border-radius: 10px;
-	-moz-box-shadow: 0px 2px 10px #CCC inset;
-	-webkit-box-shadow: 0px 2px 10px #CCC inset;
-	box-shadow: 0px 2px 10px #CCC inset;
-	font-size: 20px;
-	padding: 4px 8px 4px 8px;
-	outline: 0;
-	-webkit-appearance: none;
-	width: 260px;
-}
-input.rounded:focus {
-	border-color: #deb408;
-}
-input.rounded_login {
-	border: 1px solid #ccc;
-	-moz-border-radius: 10px;
-	-webkit-border-radius: 10px;
-	border-radius: 10px;
-	-moz-box-shadow: 0px 2px 10px #CCC inset;
-	-webkit-box-shadow: 0px 2px 10px #CCC inset;
-	box-shadow: 0px 2px 10px #CCC inset;
-	font-size: 20px;
-	padding: 4px 8px 4px 8px;
-	outline: 0;
-	-webkit-appearance: none;
-	width: 260px;
-	text-align: center;
-}
 
-input.rounded_login:focus {
-	border-color: #deb408;
-}
 /*select.rounded {
 	border: 1px solid #ccc;
 	-moz-border-radius: 10px;
@@ -240,7 +302,7 @@ select.rounded {
 	padding: 4px 8px 4px 8px;
 	outline: 0;
 	-webkit-appearance: none;
-	width: 280px;
+	width: 276px;
 	height: 34px;
 	background-color: #F2F2F2;
 }
@@ -250,17 +312,36 @@ select.rounded:focus {
 .hide {
 	display: none;
 }
-.spinner {
+/*version of spinner with not so great bg.
+/*.spinner {
 	position: fixed;
 	top: 50%;
 	left: 50%;
 	margin-left: -50px; /* half width of the spinner gif */
-	margin-top: -50px; /* half height of the spinner gif */
+/*	margin-top: -50px; /* half height of the spinner gif */
+/*	text-align:center;
+/*	z-index:1234;
+/*	overflow: auto;
+/*	width: 100px; /* width of the spinner gif */
+/*	height: 102px; /*hight of the spinner gif +2px to fix IE8 issue */
+/*}*/
+.spinner {
+	position: fixed;
+	top: 50%;
+	left: 50%;
+	margin-left: -60px; /* half width of spinner div */
+	margin-top: -60px; /* half height of spinner div */
 	text-align:center;
+	vertical-align: middle;	
 	z-index:1234;
 	overflow: auto;
-	width: 100px; /* width of the spinner gif */
-	height: 102px; /*hight of the spinner gif +2px to fix IE8 issue */
+	width: 120px; /* width of the spinner gif */
+	height: 110px; /*hight of the spinner gif +2px to fix IE8 issue */
+	padding-top: 10px;
+	background-color: #000;/*this gives a nice rounded bg*/
+	-moz-border-radius: 15px;/*this gives a nice rounded bg*/
+	-webkit-border-radius: 15px;/*this gives a nice rounded bg*/
+	border-radius: 15px;/*this gives a nice rounded bg*/
 }
 /*Styles for tooltip*/
 .ui-tooltip, .arrow:after {
@@ -310,46 +391,7 @@ select.rounded:focus {
 	top: auto;
 }
 /*Overlay Code*/
-.divoverlayBox {
-	border:15px solid #ccc;
-	position:fixed;
-	display:none;
-	width:auto;
-	min-width:300px;
-	background:#fff;
-	border-radius: 25px;
-	-moz-border-radius: 25px;
-	-webkit-border-radius: 25px;
-	-khtml-border-radius: 25px;
-	box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
-	-moz-box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
-	-webkit-box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
-	z-index:1000;
-	left: 35%;
-	top: 25%;
-	overflow:visible;
-	margin: 10px;
-	margin-top: 10px;
-	padding-left: 25px;
-}
-.iedivoverlayBox {
-	border:15px solid #ccc;
-	position:fixed;
-	display:none;
-	width:inherit;
-	height:auto;
-	background:#fff;
-	border-radius: 25px;
-	-moz-border-radius: 25px;
-	-webkit-border-radius: 25px;
-	-khtml-border-radius: 25px;
-	box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
-	-moz-box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
-	-webkit-box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
-	z-index:1000;
-	left: auto;
-	overflow:visible;
-}
+
 .bgCover {
 	background:#000;
 	position:absolute;
@@ -383,97 +425,18 @@ select.rounded:focus {
 	text-align: left;
 	line-height: 25px;
 }
-#logoutbutton:hover {
-	opacity: 0.7;
-}
-#reviewUpdateButton:hover {
-	opacity: 0.7;
-}
-#signinbutton {
-	width: 130px;
-	height: 33px;
-	/*	background: url("/cf/vaishak/images/bluebg_button.png") no-repeat;*/
-    background-color:#52ADDA;
-	color: #FFF;
-	font-family: "Lucida Sans Unicode", "Lucida Grande", Sans-Serif;
-	font-size: 18px;
-	text-align: center;
-	margin: 0px auto 0px auto;
-	font-weight: bolder;
-	line-height: 29px;
+
+.event_box {
+	padding: 15px;
+	width: 290px;
+	margin: 0 auto 15px auto;
+	background-color: #F8F8F8;
+	margin-bottom: 15px;
+	border: 1px solid #CCCCCC;
 	-moz-border-radius: 10px;
 	-webkit-border-radius: 10px;
 	border-radius: 10px;
-	box-shadow: 0px -4px 15px rgba(0, 0, 0, 0.5) inset;
-	-moz-box-shadow: 0px -4px 15px rgba(0, 0, 0, 0.5) inset;
-	-webkit-box-shadow: 0px -4px 15px rgba(0, 0, 0, 0.5) inset;
-	}
-#signinbutton:hover {
-	opacity: 0.7;
+	box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.15);
+	-moz-box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.15);
+	-webkit-box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.15);
 }
-/*table CSS starts here*/
-#rounded-corner {
-	font-family: "Lucida Sans Unicode", "Lucida Grande", Sans-Serif;
-	font-size: 16px;
-	width: 450px;
-	text-align: left;
-	border-collapse: collapse;
-	margin: 20px;
-}
-#rounded-corner td {
-    background: none repeat scroll 0 0 #E8EDFF;
-    border-top: 1px solid #FFFFFF;
-    color: #666699;
-    padding: 8px;
-	font-size: 16px;
-}
-#rounded-corner th {
-    background: none repeat scroll 0 0 #B9C9FE;
-    color: #003399;
-    font-size: 16px;
-    font-weight: normal;
-    padding: 8px;
-}
-td, td img {
-vertical-align: top;
-}
-table td {
-    padding: 0.5em;
-}
-/*tr:hover {
-	opacity: 0.7;
-}*/
-#rounded-corner tbody tr:hover td {
-background: #d0dafd;
-}
-#rounded-corner thead th.rounded-topleft {
-    background: url("/cf/vaishak/images/left.png") no-repeat scroll left -1px #E8EDFF;
-}
-#rounded-corner thead th.rounded-topright {
-    background: url("/cf/vaishak/images/right.png") no-repeat scroll right -1px #E8EDFF;
-}
-#rounded-corner tfoot td.rounded-foot-left {
-    background: url("/cf/vaishak/images/botleft.png") no-repeat scroll left bottom #E8EDFF;
-}
-#rounded-corner tfoot td.rounded-foot-right {
-    background: #e8edff url("/cf/vaishak/images/botright.png") right bottom no-repeat;
-}
-/*table CSS ends here*/
-
-#user_session_box{
-	width: 629px;
-	heigh: auto;
-	text-align: right;
-	float: right;
-	color: #000;
-	font-size:10pt;
-	background-color: #F3F3F3;
-	border-bottom-width: 1px;
-	border-bottom-style: solid;
-	border-bottom-color: #CCC;
-	margin: 0px -14px 20px 0px;
-	padding-top: 5px;
-	padding-right: 20px;
-	padding-bottom: 5px;
-	padding-left: 20px;
-	}

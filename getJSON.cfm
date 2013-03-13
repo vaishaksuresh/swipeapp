@@ -1,12 +1,12 @@
 <cfset basicquery= "Select login_mode,count(login_mode) as total from login_activity,ccac_registered_users where login_activity.student_id=ccac_registered_users.student_id ">
 
-<cfif #StructKeyExists(url,'studentid')# AND #url['studentid']# neq ''>
-  <cfset basicquery = #basicquery#&"AND login_activity.student_id = #studentid# "  />
+<cfif #StructKeyExists(url,'studentid')# AND #url['studentid']# neq '' AND #url['studentid']# neq 'undefined'>
+  <cfset basicquery = #basicquery#&"AND login_activity.student_id = '#studentid#' "  />
 </cfif>
-<cfif #StructKeyExists(url,'startDate')# AND #url['startDate']# neq ''>
+<cfif #StructKeyExists(url,'startDate')# AND #url['startDate']# neq '' AND #url['startDate']# neq 'undefined'>
   <cfset basicquery = #basicquery#&"AND login_date >= STR_TO_DATE('#DateFormat(CreateODBCDate(startDate),'mm/dd/yyyy')#','%m/%d/%Y')"  />
 </cfif>
-<cfif #StructKeyExists(url,'endDate')# AND #url['endDate']# neq ''>
+<cfif #StructKeyExists(url,'endDate')# AND #url['endDate']# neq '' AND #url['endDate']# neq 'undefined'>
   <cfset basicquery = #basicquery#&" AND login_date <= STR_TO_DATE('#DateFormat(CreateODBCDate(endDate),'mm/dd/yyyy')#','%m/%d/%Y') + INTERVAL 1 DAY "  />
 </cfif>
 

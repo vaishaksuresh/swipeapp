@@ -14,11 +14,8 @@
 <title>C.C.A.C Swipe Application</title>
 <meta name="viewport" content="width=device-width, maximum-scale=1.0" />
 <link rel="stylesheet" href="/cf/vaishak/_/css/style.css">
-<script src="_/js/modernizr-1.7.min.js"></script>
 <link href='http://fonts.googleapis.com/css?family=Leckerli+One|Rokkitt:700,400|Luckiest+Guy' rel='stylesheet' type='text/css'>
-<script src="http://code.jquery.com/jquery-1.8.3.js"></script>
 <link rel="stylesheet" href="http://code.jquery.com/ui/1.9.2/themes/base/jquery-ui.css" />
-<script src="http://code.jquery.com/ui/1.9.2/jquery-ui.js"></script>
 <!-- Stylesheets -->
 <link rel="stylesheet" href="/cf/vaishak/_/css/style.css" />
 <link rel="stylesheet" href="/cf/vaishak/_/css/desktop.css" />
@@ -29,21 +26,37 @@
 <!-- Target Galaxy Tab -->
 <link rel="stylesheet" href="/cf/vaishak/_/css/tablet.css" media="(min-width:1280px) and (max-width:1280px)" />
 <link rel="stylesheet" href="/cf/vaishak/_/css/tablet.css" media="(min-width:800px) and (max-width:800px)" />
+<script src="/cf/vaishak/_/js/modernizr-1.7.min.js"></script>
+<script src="http://code.jquery.com/jquery-1.8.3.js"></script>
+<script src="http://code.jquery.com/ui/1.9.2/jquery-ui.js"></script>
+<link rel="stylesheet" href="/cf/vaishak/_/css/jquery.multiselect.css"/>
+<script src="/cf/vaishak/_/js/jquery.multiselect.min.js"></script>
+<script src="/cf/vaishak/_/js/functions.js"></script>
 <cfapplication sessionmanagement="yes" sessiontimeout="#CreateTimeSpan(0,0,30,0)#">
+<cfinclude template="messages.cfm">
+<script src="/cf/vaishak/_/js/ui.dropdownchecklist-1.4-min.js"></script>
+<link rel="stylesheet" href="/cf/vaishak/_/css/ui.dropdownchecklist.standalone.css">
+<script>
+$(document).ready(function(){
+	alert("Multi Select Happening");
+	$("#areaofinterest").multiselect();
+	//$("#areaofinterest").dropdownchecklist();
+	alert("Multi Select Done");
+});
+</script>
 </head>
 <body>
-<div id="user_session_box"">
-       Hello <cfoutput>#StructKeyExists(session,"user")#</cfoutput>|      <a href="/cf/vaishak/logout.cfm"><b>Logout</b></a>
-   </div>
-<header> <a href="/"><img src="/cf/vaishak/images/logo.jpg" alt="CCAC Logo" /></a>
-  <p>Cesar E. Chavez Community Action Center</p>
-  <nav id="topnav"> </nav>
-</header>
+<div id="user_session_box"> Hi
+  <cfif #StructKeyExists(session,"user")#>
+    <cfoutput>#listFirst(session.user," ")#!</cfoutput>
+  </cfif>
+  <input type='button' value='Logout' class='logout_button' id='logout_button'>
+</div>
+<div id="header"> </div>
 <section id="pages" class="group">
   <div id="loadcontent" class="group">
-    <nav id="tabs"> </nav>
     <section class="sectionlist show" id="formarea">
-      <cfif cgi.request_method Eq 'post'>
+      <cfif cgi.request_method eq 'post'>
         <cfset session.user = "" />
         <cfset session.studentid = "" />
         <cfset session.email = "" />
@@ -54,6 +67,12 @@
         <cfset session.area_of_interest = "" />
         <cfset session.other_interest = "" />
         <cfset session.newslettercheckbox = ""/>
+        <cfset session.loggedin = "false">
+        <cfif #StructKeyExists(session,"eventid")#>
+			<cfset eventid = #session.eventid#>
+         <cfelse>
+	         <cfset eventid = "0">
+        </cfif>
         <cfquery name="getUserFromDB" datasource="cccac_swipe" result="UserDetailsResult">
             Select * from ccac_registered_users WHERE student_id = #form.studentid#
           </cfquery>
@@ -83,8 +102,7 @@
             </cfquery>
             <cfcatch type = "Database">
               <cfoutput>
-                <p>Following Error Occured while Querying/Updating ccac_registered_users #cfcatch.message#</p>
-                <p>#cfcatch.detail# #cfcatch.Sql#</p>
+                <cfset session.message = #genericexception#>
               </cfoutput>
               <!---Set a flag to indicate that the user from the database could not be retrieved --->
               <cfset databaseRecordFound = false/>
@@ -113,10 +131,8 @@
           VALUES ('#form.studentid#', '#session.email#', '#session.user#', '', '', '', NULL, 1, #Now()#, #Now()#, #Now()#, '#form.signinmethod#', 1, 1);
         </cfquery>
             <cfcatch type="any" >
-              <cfset session.message="Error: The student ID is not present in our system or the university database">
-              <cfoutput>Error: The student ID is not present in the system</cfoutput>
+              <cfset session.message=#idnotpresent#>
               <cflocation url="index.cfm" addtoken="no">
-              <!---<cferror type="validation" template="index.cfm" exception="application" />--->
             </cfcatch>
           </cftry>
         </cfif>
@@ -133,97 +149,107 @@
             </cfinvoke>
             <cfif #ValidationStatus# eq '1'>
               <cfloginuser name="#form.studentid#" password="#session.user#" roles="user" />
+              <cfset session.loggedin = "true">
               <cftry>
                 <!--- Inserting a new record for the login activity --->
                 <cfquery name="insertLoginDataInDB" datasource="cccac_swipe">
-        INSERT INTO login_activity (student_id,login_mode) values(#form.studentid#,'#form.signinmethod#')
-      </cfquery>
+                    INSERT INTO login_activity (student_id,login_mode,event_id) values('#form.studentid#','#form.signinmethod#',#Int(eventid)#)
+                  </cfquery>
                 <cfcatch type = "Database">
                   <cfoutput>
-                    <p>#cfcatch.message#</p>
-                    <p>#cfcatch.detail#</p>
+                    <cfset session.message = #genericexception#>
                   </cfoutput>
                 </cfcatch>
               </cftry>
             </cfif>
             <cfcatch type="any">
-              <cfset session.message="Error, Could Not Sign In: #session.user#">
-              <cfoutput>"Error, Could Not Sign In: #session.user#"</cfoutput>
+              <cfset session.message=#genericexception#>
               <cflocation url="index.cfm" addtoken="no">
             </cfcatch>
           </cftry>
           <cfelse>
           <!--- If the user has swiped, then there is no password associated with the login. Authentication not required since the card is present.--->
-          <cfset  ValidationStatus="1"/>
+          <!---          <cfset  ValidationStatus="1"/>--->
           <!--- Simply login the user with a fake password. --->
           <cfloginuser name="#form.studentid#" password="fakepassword" roles="user" />
           <cftry>
             <!--- Inserting a new record for the login activity --->
             <cfquery name="insertLoginDataInDB" datasource="cccac_swipe">
-    INSERT INTO login_activity (student_id,login_mode) values(#form.studentid#,'#form.signinmethod#')
+    INSERT INTO login_activity (student_id,login_mode,event_id) values('#form.studentid#','#form.signinmethod#','#eventid#')
   </cfquery>
+            <cfset session.loggedin = "true">
             <cfcatch type = "Database">
               <cfoutput>
-                <p>#cfcatch.message#</p>
-                <p>#cfcatch.detail#</p>
+                <cfset session.message = #genericexception#>
               </cfoutput>
             </cfcatch>
           </cftry>
         </cfif>
         </cflogin>
       </cfif>
-      <cfif #IsUserLoggedIn()# eq 'YES'>
-        <!---<h2>Greetings <cfoutput>, #session.user#</cfoutput></h2>--->
+      <!---<cfif #IsUserLoggedIn()# eq 'YES'>--->
+      <cfif #structKeyExists(session,'user')# AND #session.loggedin# eq 'true'>
         <p>Update or review your profile information</p>
-        <cfif #isDefined("session.message")#>
-          <cfoutput>#session.message#</cfoutput>
-          <cfset #session.message# = "" />
-        </cfif>
-        <form name="updateprofile" id="updateprofile" action="updateprofile.cfm">
-          <input type="hidden" name="name" id="studentname"value="<cfoutput>#session.user#</cfoutput>" />
-          <!--- <input type="text" class="rounded" name="studentid" placeholder="Student ID" value="<cfoutput>#session.studentid#</cfoutput>"/> --->
-          <input type="text" class="rounded" name="email" id="email" placeholder="Email ID" title="Email Address" value="<cfoutput>#session.email#</cfoutput>"/>
+        <div id="message_green">
+          <cfif #isDefined("session.message")#>
+            <cfoutput> #session.message#</cfoutput>
+            <cfset #session.message# = "" />
+          </cfif>
+        </div>
+        <br>
+        <div id="message_box">
+          <cfif #isDefined("session.message")#>
+            <cfoutput> #session.message#</cfoutput>
+            <cfset #session.message# = "" />
+          </cfif>
+        </div>
+        <form name="updateprofile" id="updateprofile" action="updateprofile.cfm1">
+          <input type="hidden" name="name" id="studentname" value="<cfoutput>#session.user#</cfoutput>" />
+          <input type="text" class="rounded" name="email" id="email" placeholder="Email ID" title="Email Address" maxlength="50" value="<cfoutput>#session.email#</cfoutput>"/>
           <br />
           <br />
-          <input type="text" class="rounded" name="phone" if="phon" title="Phone Number" placeholder="Phone Number" value="<cfoutput>#session.phone#</cfoutput>"/>
+          <input type="text" class="rounded" name="phone" id="phone" title="Phone Number" maxlength="12" placeholder="Phone Number" value="<cfoutput>#session.phone#</cfoutput>"/>
           <br />
           <br />
-          <input type="text" class="rounded" name="major" title="Major" placeholder="Major" value="<cfoutput>#session.major#</cfoutput>"/>
+          <input type="text" class="rounded" name="major" id="major" title="Major" placeholder="Major" maxlength="20" value="<cfoutput>#session.major#</cfoutput>"/>
           <br />
           <br />
-          <!--- <input type="text" class="rounded" name="year" title="Year In School" placeholder="Year"/> --->
           <select class="rounded" name="year" id = "yearinschool" title="Year In School">
             <option value = "" selcted="selected">Select Year</option>
             <option value = "freshman" <cfif #session.yearinschool# eq 'freshman'>selected='selected'</cfif>>Freshman</option>
             <option value = "sophomore" <cfif #session.yearinschool# eq 'sophomore'>selected='selected'</cfif>>Sophomore</option>
+            <option value = "junior" <cfif #session.yearinschool# eq 'sophomore'>selected='selected'</cfif>>Junior</option>
             <option value = "senior" <cfif #session.yearinschool# eq 'senior'>selected='selected'</cfif>>Senior</option>
             <option value = "graduate" <cfif #session.yearinschool# eq 'graduate'>selected='selected'</cfif>>Graduate Student</option>
           </select>
           <br />
           <br />
-          <select class="rounded" name="areaofinterest" id = "areaofinterest" title="Area of Interest">
-            <option value = "" selcted="selected">Select Area of Interest</option>
-            <option value = "fe" <cfif #session.area_of_interest# eq 'fe'>selected='selected'</cfif>>FE</option>
-            <option value = "strive" <cfif #session.area_of_interest# eq 'strive'>selected='selected'</cfif>>Strive</option>
-            <option value = "legacytours" <cfif #session.area_of_interest# eq 'legacytours'>selected='selected'</cfif>>Legacy Tours</option>
-            <option value = "volunteer" <cfif #session.area_of_interest# eq 'volunteer'>selected='selected'</cfif>>Volunteer</option>
-            <option value = "workshops" <cfif #session.area_of_interest# eq 'workshops'>selected='selected'</cfif>>Workshops</option>
-            <option value = "others" <cfif #session.area_of_interest# eq 'others'>selected='selected'</cfif>>Others</option>
+          <select class="rounded" name="areaofinterest" id = "areaofinterest" title="Area of Interest" multiple="multiple">
+            <option value = "fe" <cfif #FindNoCase("fe",session.area_of_interest)# gt 0>selected='selected'</cfif>>FE</option>
+            <option value = "strive" <cfif #FindNoCase("strive",session.area_of_interest)# gt 0>selected='selected'</cfif>>Strive</option>
+            <option value = "legacytours" <cfif #FindNoCase("legacytours",session.area_of_interest)# gt 0>selected='selected'</cfif>>Legacy Tours</option>
+            <option value = "volunteer" <cfif #FindNoCase("volunteer",session.area_of_interest)# gt 0>selected='selected'</cfif>>Volunteer</option>
+            <option value = "workshops" <cfif #FindNoCase("workshops",session.area_of_interest)# gt 0>selected='selected'</cfif>>Workshops</option>
+            <option value = "others" <cfif #FindNoCase("others",session.area_of_interest)# gt 0>selected='selected'</cfif>>Other</option>
           </select>
           <br />
           <br />
           <input type="text" class="rounded" name="otherinterest" id="otherinterest" title="Other Intestest" placeholder="Others"
-    value="<cfoutput>#session.other_interest#</cfoutput>" <cfif #session.area_of_interest# neq 'others'><cfoutput>style="display:none;"</cfoutput></cfif>/>
-          <br>
-          <br>
-          <input type="checkbox" name="newslettercheckbox" id="subscription" value="1" <cfif #session.newslettercheckbox# eq 1>checked='yes'</cfif> />
-          Subscribe to the newsletter <br />
-          <br />
-          <img src="/cf/vaishak/images/update.png" id="updateprofilebutton" name="updateprofile"/> 
-          <!---<img id="logoutbutton" name="logoutbutton" src="/cf/vaishak/images/logout.png" onClick="javascript:window.location.href='/cf/vaishak/logout.cfm'"/>--->
+    value="<cfoutput>#session.other_interest#</cfoutput>" <cfif #FindNoCase("others",session.area_of_interest)# lte 0>style='display:none;'</cfif>/>
+          <div id="subscribe_box">
+            <input type="checkbox" name="newslettercheckbox" id="subscription" value="1" <cfif #session.newslettercheckbox# eq 1>checked='yes'</cfif> />
+            Subscribe to the newsletter</div>
+          <!---<div class="blue_button" id="updateprofilebutton">Update</div>--->
+          <input type="button" id="updateprofilebutton" class="blue_button" value="Update">
         </form>
         <cfelse>
-        <cfset session.message = "Entered Student ID and Password combination is invalid.">
+        <cfif cgi.request_method Eq 'post'>
+          <cfset session.message = #invalidcredentials#>
+          <cfset session.studentid = #form.studentid# />
+          <cfelse>
+          <cfset session.message = #sessionexpired#>
+        </cfif>
+        <cfset session.loggedin = "false"/>
         <CFLOCATION URL="/cf/vaishak/index.cfm" ADDTOKEN="no"/>
       </cfif>
     </section>
@@ -235,8 +261,5 @@
   <p></p>
   <nav id="bottomnav"> </nav>
 </footer>
-<!--- <script src="//ajax.googleapis.com/ajax/libs/jquery/1.5.1/jquery.min.js"></script>
-<script>window.jQuery || document.write("<script src='_/js/jquery-1.5.1.min.js'>\x3C/script>")</script>--->
-<script src="/cf/vaishak/_/js/functions.js"></script>
 </body>
 </html>
