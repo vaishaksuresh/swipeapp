@@ -7,7 +7,7 @@ body {
 /*	background-color:#F3F3F3;*/
 	background-color:#f2f2f2;
 	width: auto;
-	overflow: hidden !important; /*this prevents the ipad from scaling the page;*/
+	overflow: hidden !important; /*this prevents the tablet from scaling the page;*/
 }
 	
 #user_session_box {
@@ -20,9 +20,9 @@ body {
 	font-weight: bolder;
 	background-image:url(../../images/bluebar4.png);
 	background-repeat: repeat-x;
-	position: fixed !important;/*keeps the bar in top of the screen at all times*/
-	top: 0px !important;
-	left: 0px;
+	top: 0%;
+	left: 0%;
+	position: fixed;/*keeps the bar in top of the screen at all times*/
 	margin: 0px;/*Overwrites desktop margin*/
 	box-shadow: none;/*overwrites shadow on desktop version*/
 	-moz-box-shadow: none;
@@ -32,13 +32,21 @@ body {
 	margin:0 0 0 45%; /*Centers greetings in the bar*/
     padding: 5px;/*Centers gretings vertically*/
 	font-size:16pt;	
+	width: auto;
 	}
 .logout_button {
 	font-size: 14pt;/*prevents font from looking to small in ipad*/
-/*	align: right;*/
 	padding: 0px 5px 2px 5px;
 	margin: 6px 10px;
 	border: 1px solid #0C6DB6;
+	background-image:url(../../images/bluebar_button.png);
+}
+.manualSignin {
+	font-size: 14pt;/*prevents font from looking to small in ipad*/
+	padding: 0px 5px 2px 5px;
+	margin: 6px 10px;
+	border: 1px solid #0C6DB6;
+	float: left;
 	background-image:url(../../images/bluebar_button.png);
 }
 #header {

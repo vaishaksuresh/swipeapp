@@ -1,27 +1,27 @@
 body {
-/*	background-color:#D8E9FE;*/
-    background-color:#FFF;
+	background-color:#FFF;
 	font-family: Rokkitt, 'Times New Roman', serif;
 }
-#user_session_box{
-    color: #444444;
-	color: #FFF;
+/*iframe {
+border: none !important;
+}*/
+
+#user_session_box {
 	font-family: "Lucida Sans Unicode", "Lucida Grande", Sans-Serif;
-    font-size: 10pt;
-    min-height: 33px;
-    text-align: right;
+	font-size: 10pt;
+	min-height: 33px;
+	text-align: right;
 	margin: 0 -15px 0 -5px;
 	box-shadow: 1px 3px 19px rgba(0, 0, 0, 0.2) inset;
 	-moz-box-shadow: 1px 3px 19px rgba(0, 0, 0, 0.2) inset;
 	-webkit-box-shadow: 1px 3px 19px rgba(0, 0, 0, 0.2) inset;
-	}
-#user_greetings{
-	margin:0 0 0 70%;
-	padding:7px; 
+}
+#user_greetings {
+	padding:8px;
 	float:left;/*float could be causing the problem of overlaping bar on tablet*/
-	font-size:10pt;	
-	}
-	
+	font-size:10pt;
+	width: 82%;
+}
 .logout_button {
 	width: auto;
 	height: auto;
@@ -32,7 +32,7 @@ body {
 	-moz-border-radius: 6px;
 	-webkit-border-radius: 6px;
 	border-radius: 6px;
-	float: right;/*float could be causing the problem of overlaping bar on tablet*/
+	float: right;
 	margin: 4px 15px;
 	border: 1px solid #B5B5B5;
 	text-align: center;
@@ -42,6 +42,31 @@ body {
 }
 .logout_button:hover {
 	opacity: 0.7;
+	filter:alpha(opacity=80); /* For IE8 and earlier */
+	-webkit-tap-highlight-color: rgba(255, 255, 255, 0);
+}
+.manualSignin {
+	width: auto;
+	height: auto;
+	color: #FFF;
+	font-family: "Lucida Sans Unicode", "Lucida Grande", Sans-Serif;
+	font-size: 10pt;
+	font-weight: bolder;
+	-moz-border-radius: 6px;
+	-webkit-border-radius: 6px;
+	border-radius: 6px;
+	float: right;
+	margin: 4px 15px;
+	border: 1px solid #B5B5B5;
+	text-align: center;
+	padding: 1px 5px 4px 5px;
+	background-image:url(../../images/graybar.png);
+	cursor: default;
+}
+.manualSignin:hover {
+	opacity: 0.7;
+	filter:alpha(opacity=80); /* For IE8 and earlier */
+	-webkit-tap-highlight-color: rgba(255, 255, 255, 0);
 }
 #header {
 	border: solid 5px #E9E9E9;
@@ -49,19 +74,10 @@ body {
 	-webkit-border-radius: 15px;
 	border-radius: 15px;
 	width: 525px;
-    height: 170px;
+	height: 170px;
 	margin: 3% auto 0% auto;
 	background: url("../../images/cesar_chavez.png") no-repeat scroll center center transparent;
 }
-/*This header works with mobile but doesn't look so good with desktop/tablet*/
-/*#header {
-    background: url("../../images/cesar_chavez.png") no-repeat scroll center center transparent;
-    border: thin solid #DDDDDD;
-    height: 170px;
-    margin: 3% 8%;
-    padding: 10px;
-    text-align: center;
-}*/
 input.rounded_login {
 	border: 1px solid #ccc;
 	-moz-border-radius: 10px;
@@ -76,9 +92,36 @@ input.rounded_login {
 	-webkit-appearance: none;
 	width: 260px;
 	text-align: center;
+	background-color: #FCFCFC;
 }
 input.rounded_login:focus {
-	border-color: #deb408;
+	background-color: #FFF;
+	-webkit-tap-highlight-color: rgba(255, 255, 255, 0);/*This cancels ugly orange missalign border on android*/
+	text-align: center;
+}
+input.rounded_swipe {
+	border: 1px solid #ccc;
+	-moz-border-radius: 10px;
+	-webkit-border-radius: 10px;
+	border-radius: 10px;
+	-moz-box-shadow: 0px 2px 10px #CCC inset;
+	-webkit-box-shadow: 0px 2px 10px #CCC inset;
+	box-shadow: 0px 2px 10px #CCC inset;
+	font-size: 20px;
+	padding: 4px 8px 4px 8px;
+	outline: 0;
+	-webkit-appearance: none;
+	width: 260px;
+	text-align: center;
+	background-color: #FCFCFC;
+}
+input.rounded_swipe:focus {
+	-webkit-touch-callout: none;
+	-webkit-user-select: none;
+	-khtml-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
 }
 input.rounded {
 	border: 1px solid #ccc;
@@ -93,16 +136,41 @@ input.rounded {
 	outline: 0;
 	-webkit-appearance: none;
 	width: 260px;
-/*	text-align: center; This doesnt look good on desktop version*/ 
+	background-color: #FCFCFC;/*text-align: center; This doesnt look good on desktop version*/ 
 }
 input.rounded:focus {
-	border-color: #deb408;
+	background-color: #FFF;
+	-webkit-tap-highlight-color: rgba(255, 255, 255, 0);
+}
+select.rounded {
+	border: 1px solid #ccc;
+	-moz-border-radius: 10px;
+	-webkit-border-radius: 10px;
+	border-radius: 10px;
+	-moz-box-shadow: 0px 10px 8px #FFF inset;
+	-webkit-box-shadow: 0px 10px 8px #FFF inset;
+	box-shadow: 0px 10px 8px #FFF inset;
+	font-size: 20px;
+	padding: 4px 8px 4px 8px;
+	outline: 0;
+	-webkit-appearance: none;
+	width: 276px;
+	background-color: #F2F2F2;
+	height: 35px;
+}
+.swipe_card {
+	padding: 4px 8px 4px 8px;
+	width: 260px;
+	height: 94px;
+	background: url("../../images/swipe_card.png") no-repeat scroll center center transparent;
+	margin: 0 auto;
 }
 .blue_button {
 	width: 130px;
 	height: auto;
 	padding: 6px;
 	margin: 0% auto 0% auto;
+	background-color: #01B7F3;
 	background-image:url(../../images/bluebar5.png);
 	color: #FFF;
 	text-align: center;
@@ -114,34 +182,18 @@ input.rounded:focus {
 	-webkit-border-radius: 10px;
 	border-radius: 10px;
 	cursor: default;
-	}
+}
 .blue_button:hover {
 	opacity: 0.7;
 }
-/*#signinbutton {
-	width: 130px;
-	height: auto;
-	padding: 8px;
-	margin: 0% auto 20% auto;
-	background-image:url(../../images/bluebar5.png);
-	color: #FFF;
-	text-align: center;
-	font-family: "Lucida Sans Unicode", "Lucida Grande", Sans-Serif;
-	font-size: 14pt;
-	font-weight: bolder;
-	-moz-border-radius: 10px;
-	-webkit-border-radius: 10px;
-	border-radius: 10px;
-	cursor: default;
-	}*/
-#message_box {
+.h #message_box {
 	font-size: 14px;
 	width: 260px;
 	height: auto;
 	text-align: center;
 	margin: -15px auto 10px auto;
 	color: #F00;
-	}
+}
 #message_green {
 	font-size: 14px;
 	width: 260px;
@@ -149,73 +201,28 @@ input.rounded:focus {
 	text-align: center;
 	margin: -15px auto 10px auto;
 	color: #060;
-	}
+}
 #subscribe_box {
-    font-size: 14pt;
-    margin: 3% 0;
+	font-size: 14pt;
+	margin: 3% 0;
+	padding: 4px;
 }
-/* Start Footer */
-
-footer {
-	width: 960px;
-	margin: 0 auto;
-	text-align: center;
-	padding-top: 20px;
-	font-weight: bold;
-}
-footer nav {
-	margin: 18px 0;
-	padding-top: 10px;/*	border-top: 4px solid #000;*/
-}
-footer li {
-	display: inline;
-	border-right: 1px dotted;
-}
-footer li:last-child {
-	border: none;
-}
-footer li a {
-	color: #af2411;
-	padding: 0 10px;
-}
-footer nav li a:hover {
-	color: #FFF;
-	background-color:#666;
-}
-/* End Footer */
-/* Start Pages */
-
-#pages {
-	width: auto;
-	margin: 0 auto;
-	margin-top: 30px;
-}
-.handheld, #tabs {
-	display: none;
+#inner {
+    display: inline-block;
+	font-size: 14pt;
 }
 .sectionlist {
 	width: auto;
-	margin: 0 auto;
+	margin: 30px auto 0;
 	text-align:center;
 	height: auto;
-/*	background-color: #FFF;*/
+	padding-bottom: 20px;
 }
-/*.sectionlist img {
-	width: 80px;
-	height: 80px;
-	border: 4px solid #FFF;
-	position: relative;
-	float: none;
-	-webkit-box-shadow:0 5px 10px #000;
-	-moz-box-shadow:0 5px 10px rgba(0, 0, 0, 0.7);
-	box-shadow:0 5px 10px rgba(0, 0, 0, 0.7);
-}*/
 .sectionlist img {
 	position: relative;
 	float: none;
 }
 .sectionlist svg {
- width:;
 	border: 4px solid #FFF;
 	margin-right: auto;
 	margin-left: auto;
@@ -274,57 +281,9 @@ footer nav li a:hover {
 .sectionlist li:hover .photoname {
 	color: #A21;
 }
-
-/*select.rounded {
-	border: 1px solid #ccc;
-	-moz-border-radius: 10px;
-	-webkit-border-radius: 10px;
-	border-radius: 10px;
-	-moz-box-shadow: 0px 2px 3px #666;
-	-webkit-box-shadow: 0px 2px 3px #666;
-	box-shadow: 0px 2px 3px #666;
-	font-size: 20px;
-	padding: 4px 4px;
-	outline: 0;
-	-webkit-appearance: none;
-	width: 260px;
-	background-color: # F2F2F2;
-}*/
-select.rounded {
-	border: 1px solid #ccc;
-	-moz-border-radius: 10px;
-	-webkit-border-radius: 10px;
-	border-radius: 10px;
-	-moz-box-shadow: 0px 10px 8px #FFF inset;
-	-webkit-box-shadow: 0px 10px 8px #FFF inset;
-	box-shadow: 0px 10px 8px #FFF inset;
-	font-size: 20px;
-	padding: 4px 8px 4px 8px;
-	outline: 0;
-	-webkit-appearance: none;
-	width: 276px;
-	height: 34px;
-	background-color: #F2F2F2;
-}
-select.rounded:focus {
-	border-color: #deb408;
-}
-.hide {
+ide {
 	display: none;
 }
-/*version of spinner with not so great bg.
-/*.spinner {
-	position: fixed;
-	top: 50%;
-	left: 50%;
-	margin-left: -50px; /* half width of the spinner gif */
-/*	margin-top: -50px; /* half height of the spinner gif */
-/*	text-align:center;
-/*	z-index:1234;
-/*	overflow: auto;
-/*	width: 100px; /* width of the spinner gif */
-/*	height: 102px; /*hight of the spinner gif +2px to fix IE8 issue */
-/*}*/
 .spinner {
 	position: fixed;
 	top: 50%;
@@ -332,7 +291,7 @@ select.rounded:focus {
 	margin-left: -60px; /* half width of spinner div */
 	margin-top: -60px; /* half height of spinner div */
 	text-align:center;
-	vertical-align: middle;	
+	vertical-align: middle;
 	z-index:1234;
 	overflow: auto;
 	width: 120px; /* width of the spinner gif */
@@ -342,6 +301,8 @@ select.rounded:focus {
 	-moz-border-radius: 15px;/*this gives a nice rounded bg*/
 	-webkit-border-radius: 15px;/*this gives a nice rounded bg*/
 	border-radius: 15px;/*this gives a nice rounded bg*/
+	opacity:0.8;
+	filter:alpha(opacity=80); /* For IE8 and earlier */
 }
 /*Styles for tooltip*/
 .ui-tooltip, .arrow:after {
@@ -425,13 +386,11 @@ select.rounded:focus {
 	text-align: left;
 	line-height: 25px;
 }
-
 .event_box {
-	padding: 15px;
+	padding: 20px;
 	width: 290px;
-	margin: 0 auto 15px auto;
+	margin: 0 auto 25px auto;
 	background-color: #F8F8F8;
-	margin-bottom: 15px;
 	border: 1px solid #CCCCCC;
 	-moz-border-radius: 10px;
 	-webkit-border-radius: 10px;
@@ -439,4 +398,10 @@ select.rounded:focus {
 	box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.15);
 	-moz-box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.15);
 	-webkit-box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.15);
+}
+.report_content {/*We need to add this class to source with div id="cf_layoutareacf_layoutarea1364241013033"*/
+	height: 550px;
+}
+.border_none {
+	border: none;
 }

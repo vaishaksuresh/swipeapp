@@ -10,10 +10,15 @@
   <cftry>
     <cfset local.getAllUsers = queryNew("") />
     <cfquery name="getAllUsers" datasource="cccac_swipe">
-    Select concat(' ',student_id)as student_id,email,name,phone_number,major,year_in_college,area_of_interest,area_of_interest_value,
-	  signup_date,last_login_date,last_update_date,last_update_mode,total_login_count, case subscribed_to_newsletter
-	  when 1 THEN 'Yes' ELSE 'No' END as 'NewsLetter'
-	  from ccac_registered_users
+    SELECT concat(' ',ccac_registered_users.student_id) as student_id,email,name,phone_number,major,year_in_college,area_of_interest,area_of_interest_value,
+	 signup_date,last_login_date,last_update_date,last_update_mode,total_login_count, case subscribed_to_newsletter
+	 when 1 THEN 'Yes' ELSE 'No' END AS 'NewsLetter',attendedevents
+FROM ccac_registered_users,(
+SELECT student_id, GROUP_CONCAT(DISTINCT event_name SEPARATOR ',') AS attendedevents
+FROM login_activity,event_details
+WHERE login_activity.event_id = event_details.event_id
+GROUP BY student_id) eventstable
+WHERE ccac_registered_users.student_id = eventstable.student_id
       order by #gridsortcolumn# #arguments.gridsortdirection#
    </cfquery>
     <cfreturn queryConvertForGrid(local.getAllUsers, arguments.pageNo, arguments.pageSize) />

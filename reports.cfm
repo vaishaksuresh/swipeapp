@@ -36,8 +36,6 @@
 <cfapplication sessionmanagement="yes" sessiontimeout="#CreateTimeSpan(0,0,30,0)#">
 <cfajaximport tags="cfform,cfgrid">
 <!--Load the AJAX API-->
-<!---<script type="text/javascript" src='https://www.google.com/jsapi?autoload={"modules":[{"name":"visualization","version":"1","packages":["corechart","table"]}]}'>
-    </script>--->
 <script type="text/javascript" src='https://www.google.com/jsapi'></script>
 <script type="text/javascript">
   // Load the Visualization API and the piechart package.
@@ -99,31 +97,15 @@
   // a single message from all of them.
   function selectHandler() {
       var selection = table.getSelection();
-      var message = '';
-      var str = '';
-      for (var i = 0; i < selection.length; i++) {
-          var item = selection[i];
-          if (item.row !== null && item.column !== null) {
-              str = data.getFormattedValue(item.row, item.column);
-              message += str + '\n';
-          } else if (item.row !== null) {
-              str = data.getFormattedValue(item.row, 0);
-              message += str + '\n';
-          } else if (item.column !== null) {
-              str = data.getFormattedValue(0, item.column);
-              message += str + '\n';
-          }
-      }
-      if (message === '') {
-          message = 'nothing';
-      }
-      $('#selectedstudent').val(message);
+      $('#selectedstudent').val(data.getFormattedValue(selection[0].row,0));
       drawChart();
   }
 
   $(document).ready(function () {
       drawChart();
 	  drawTable();
+	  $('#startDateText').datepicker();
+	  $('#endDate').datepicker();
       $('#filterReportButton').click(function () {
           drawChart();
           drawTable();
@@ -137,14 +119,36 @@
       });
   });
 </script>
+<script>
+	function noteChange(name,email,lastlogin,lastupdate,lastupdatemode,subscription,attendedevents) {
+		$('#details').html("<p>Name: "+name+"<br>Email: "+email+"<br>Last Login: "+lastlogin+"<br>Attended Events: "+attendedevents+"<br>Last Update: "+lastupdate+","+lastupdatemode+"<br>Newsletter Subscription: "+subscription+"</p>");
+	}
+	function exporttoexcel() { 
+	  var mygrid = ColdFusion.Grid.getGridObject('FirstGrid'); 
+	  var mydata = mygrid.getStore(); 
+	  var params = mydata.lastOptions.params; 
+	  var sort = params.sort; 
+	  var dir = params.dir; 
+	  page = params.start/params.limit+1; 
+	  window.open('download.cfm?page='+page+'&sort='+sort+'&dir='+dir+'&size='+params.limit); 
+	} 
+</script>
+<style>
+#ext-gen10 {
+	border: none;
+}
+#ext-gen5 {
+	border: none;
+}
+</style>
 </head>
 <body>
-<div id="header"> </div>
+<!---<div id="header"> </div>--->
 <section id="pages" class="group">
   <div id="loadcontent" class="group">
     <section class="sectionlist show" id="formarea">
-      <cflayout type="tab" tabHeight="600" align="center" >
-        <cflayoutarea title="Login Breakdown">
+      <cflayout type="tab" tabHeight="600" align="center" style="border:0px;">
+        <cflayoutarea title="Graphical View" style="height:550px;border:none;">
           <form name="generateReportForm">
             <br/>
             <br/>
@@ -160,11 +164,12 @@
           </form>
           <br />
           <div id="chart_div"></div>
-          <br>
+        </cflayoutarea>
+        <cflayoutarea title="Tabular View">
           <div id='table_div'></div>
         </cflayoutarea>
         <cflayoutarea title="Registered Users" source = "/cf/vaishak/listAllRegisteredStudents.cfm"> </cflayoutarea>
-        <cflayoutarea title="Login BreakDown by Events" source = "/cf/vaishak/listUsersByEvent.cfm"> </cflayoutarea>
+        <cflayoutarea title="Events View" source = "/cf/vaishak/listUsersByEvent.cfm"> </cflayoutarea>
       </cflayout>
     </section>
   </div>

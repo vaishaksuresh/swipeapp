@@ -6,7 +6,7 @@ body {
 	background: url("../../images/cesar_chavez_handheld2.png") no-repeat /*scroll left bottom*/ /*#EFEFEF*/;
     background-position:center top;
 	width: auto;
-	overflow: hidden !important;
+	overflow: hidden !important;/*this prevents handheld from scaling the page;*/
 }
 
 .hide {
@@ -21,9 +21,9 @@ body {
 	font-size:16pt;
 	font-weight: bolder;
 	background-image:url(../../images/bluebar7.png);
-	position: fixed;
 	top: 0px;
-	left: 0px;
+	left: 0%;
+	position: fixed;
 	margin: 0px;/*Overwrites desktop margins*/
 	box-shadow: none;/*overwrites shadows on desktop version*/
 	-moz-box-shadow: none;
@@ -31,8 +31,9 @@ body {
 	}
 /*This is working. Don't change!*/
 #user_greetings{
-	margin:0 0 0 35%; /*overwrites alignment ond desktop.css*/
+	margin:0 0 0 1%; /*overwrites alignment ond desktop.css*/
 	font-size:16pt;	/*overwrites fontsize on desktop.css*/
+	width: auto;
 	}
 /*This is an attempt to use an image for a logout button..
 .logout_button {
@@ -51,9 +52,18 @@ body {
 	padding: 4px 7px 6px 7px;
 	margin: 6px;
 	border: 1px solid #0C6DB6;
-	-moz-border-radius: 6px;
-	-webkit-border-radius: 6px;
-	border-radius: 6px;
+	background-image:url(../../images/bluebar_button.png);
+}
+.manualSignin {
+	width: auto;
+	color: #FFF;
+	font-size: 11pt;
+	font-weight: bolder;
+	align: left;
+	padding: 4px 7px 6px 7px;
+	margin: 6px;
+	float: left;
+	border: 1px solid #0C6DB6;
 	background-image:url(../../images/bluebar_button.png);
 }
 #header {
@@ -66,30 +76,6 @@ body {
 	-webkit-border-radius: 0;/*	this is to overwrite desktop header:*/
 	border-radius: 0;/*	this is to overwrite desktop header:*/
 }
-/*Working rounded corners header
-#header {
-	margin: 35px auto -10px auto;
-	width: 276px;
-	height: 90px;
-	-moz-border-radius: 10px;
-	-webkit-border-radius: 10px;
-	border-radius: 10px;
-	border: 1px solid #D6D6D6;
-	background: url("../../images/cccac3.png") no-repeat scroll left bottom #F0F0F0;
-}*/
-/*This header works with old desktop header CSS*/
-/*#header {
-	margin: 45px auto -10px auto;
-	width: 256px;
-	height: 70px;
-	-moz-border-radius: 10px;
-	-webkit-border-radius: 10px;
-	border-radius: 10px;
-	border: 1px solid #D6D6D6;
-	background: url("../../images/cccac3.png") no-repeat scroll left bottom #F0F0F0;
-}*/
-
-
 /* Hide Elements that area not necessary */
 #topnav, .sectionlist h2, .sectionlist p, header p, footer p, .hide {
 	display: none;
@@ -168,7 +154,15 @@ input.rounded_login {
 	padding: 6px 8px 6px 8px;
 	outline: 0;
 	width: 260px;
-	text-align: center !important;
+	text-align: center;
+}
+input.rounded_swipe {
+	border: 1px solid #ccc;
+	font-size: 26px;
+	padding: 6px 8px 6px 8px;
+	outline: 0;
+	width: 260px;
+	text-align: center;
 }
 .blue_button {
 	width: 278px;
@@ -183,5 +177,14 @@ input.rounded_login {
 	}
 #subscribe_box {
 	font-size: 16pt;/*overwrites font size of desktop.css*/
-    margin: 5% 0;/*increase marging for handheld version*/
+    /*margin: 5% 0;*//*increase marging for handheld version*/
+}
+.event_box {
+	padding: 0px;
+	margin: 0 auto 25px auto;
+	background-color: transparent;
+	border: none;
+	box-shadow: none;
+	-moz-box-shadow: none;
+	-webkit-box-shadow: none;
 }

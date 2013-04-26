@@ -36,7 +36,7 @@
   <cfif #isDefined("session.isadmin")# AND #session.isadmin# eq "true">
     <cfoutput>
       <input type="button" class='logout_button' id='logout_button' value="Logout">
-      <input typ="button" class="logout_button" id="manualsigninbutton" value="Manual Signin">
+      <input typ="button" class="manualSignin" id="manualsigninbutton" value="Manual Sign-In">
     </cfoutput>
   </cfif>
 </div>
@@ -66,15 +66,19 @@
    		  </cfquery>
           <cfset session.eventid = #getEventId.event#>
         </cfif>
-        <p>Please Swipe Card</p>
+        <br />
         <div id="signinpagemessages" style="display:none;"></div>
         <form name="swipesignin" id="swipesignin" method="POST">
-          <input type="text" class="rounded_login" name="studentid" id="studentid" placeholder="Swipe Card" title="Swipe Card" required="required" readonly="readonly" >
+          <input type="text" class="rounded_swipe" name="studentid" id="studentid" placeholder="Swipe Card" title="Swipe Card" required="required" readonly="readonly" value="Swipe Tower Card" style="color:#CCCCCC" >
           <br />
           <br />
           <input type="hidden" name="signinmethod" id="signinmethod" value="swipe">
           <img id="adminsigninbutton" name="adminsigninbutton" src="/cf/vaishak/images/login.png" style="display:none;"/>
         </form>
+        <br />
+        <div class="swipe_card"></div>
+        <br />
+        <br />
         <br />
         <cfelse>
         <CFLOCATION URL="/cf/vaishak/logout.cfm" ADDTOKEN="no" />

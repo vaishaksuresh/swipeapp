@@ -11,46 +11,75 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 <META HTTP-EQUIV="CACHE-CONTROL" CONTENT="NO-CACHE">
 <title>C.C.A.C Swipe Application</title>
-<meta name="viewport" content="width=device-width, maximum-scale=1.0" />
+<meta name="viewport" content="width=device-width, user-scalable=no" />
 <script src="/cf/vaishak/_/js/modernizr-1.7.min.js"></script>
 <link href='http://fonts.googleapis.com/css?family=Leckerli+One|Rokkitt:700,400|Luckiest+Guy' rel='stylesheet' type='text/css'>
+
 <script src="http://code.jquery.com/jquery-1.8.3.js"></script>
+<script src="/cf/vaishak/_/js/functions.js"></script>
+<script src="http://code.jquery.com/ui/1.10.1/jquery-ui.js"></script>
+
 <link rel="stylesheet" href="http://code.jquery.com/ui/1.9.2/themes/base/jquery-ui.css" />
-<script src="http://code.jquery.com/ui/1.9.2/jquery-ui.js"></script>
+
 <!-- Stylesheets -->
 <link rel="stylesheet" href="/cf/vaishak/_/css/style.css" />
 <link rel="stylesheet" href="/cf/vaishak/_/css/desktop.css" />
+<!-- Target iPhone -->
+<link rel="stylesheet" href="/cf/vaishak/_/css/handheld.css" media="(min-device-width:319px) and (max-device-width:481px)" />
 <!-- Target iPad -->
-<link rel="stylesheet" href="/cf/vaishak/_/css/tablet.css" media="(min-device-width:768px) and (max-device-width:1024px)" />
 <!-- Target Galaxy Tab -->
 <link rel="stylesheet" href="/cf/vaishak/_/css/tablet.css" media="(min-width:590px) and (max-width:1024px)" />
-<link rel="stylesheet" href="/cf/vaishak/_/css/tablet.css" media="(min-width:800px) and (max-width:800px)" />
-<!-- Target iPhone -->
-<link rel="stylesheet" href="/cf/vaishak/_/css/handheld.css" media="(min-device-width:320px) and (max-device-width:480px)" />
 <cfapplication sessionmanagement="yes" sessiontimeout="#CreateTimeSpan(0,0,30,0)#">
+
+
+
+<link rel="stylesheet" href="/cf/vaishak/_/css/ui.dropdownchecklist.standalone.css">
+
+<script>
+var loggedinstatus = false;
+$(document).ready(function(){
+	if(loggedinstatus==true){
+		$('#loadcontent').load('/cf/vaishak/updateprofile.cfm #formarea',function(){
+			$("#areaofinterest").change();
+			$('#user_session_box').html("<div id='user_greetings'>Hi " + $('#studentname').val().substr(0, $('#studentname').val().indexOf(" ")) + "!</div><div class='logout_button' id='logout_button'>Logout</div>");
+			$("#formarea").tooltip({
+				position: {
+					my: "center bottom-20",
+					at: "center top",
+					using: function (position, feedback) {
+						$(this).css(position);
+						$("<div>").addClass("arrow").addClass(feedback.vertical).addClass(feedback.horizontal).appendTo(this);
+					}
+				}
+			});
+		});
+	}
+});
+</script>
 </head>
 <body>
-<div id="user_session_box"><!--- Hello Admin | <a href="/cf/vaishak/logout.cfm"><b>Logout</b></a> ---></div>
-<cfif #IsUserLoggedIn()# eq 'YES'>
-  <cflocation url="/cf/vaishak/updateprofile.cfm" addtoken="no" />
+<div id="user_session_box" data-role="header" data-position="fixed"></div>
+<!---<cfif #IsUserLoggedIn()# eq 'YES'>--->
+<cfif #structKeyExists(session,'user')# AND #session.loggedin# eq "true">
+  <script> loggedinstatus = true;</script>
+  <!---<cflocation url="/cf/vaishak/updateprofile.cfm" addtoken="no" />--->
 </cfif>
-</br>
-</br>
-<div id="header"></br>
-  <p>Cesar E. Chavez Community Action Center</p>
+<div id="header">
+  <div class="header"></div>
 </div>
 <div id="spinner" class="spinner" style="display:none;"> <img id="img-spinner" src="/cf/vaishak/images/spinner.gif" alt="Loading"/> </div>
 <section id="pages" class="group">
   <div id="loadcontent" class="group">
     <section class="sectionlist show" id="inputarea">
       <p>Please Enter Student ID and SJSU One Password</p>
-      <cfif #isDefined("session.message")#>
-        <cfoutput> #session.message#</cfoutput>
-        <cfset #session.message# = "" />
-      </cfif>
-      <div id="signinpagemessages" style="display:none;"></div>
+      <div id="message_box">
+        <cfif #isDefined("session.message")#>
+          <cfoutput> #session.message#</cfoutput>
+          <cfset #session.message# = "" />
+        </cfif>
+      </div>
       <form name="signinform" id="signinform" action="#" method="POST">
-        <input type="text" class="rounded_login" name="studentid" id="studentid" placeholder="Student ID" required="required" maxlength="9 ">
+        <input type="text" class="rounded_login" name="studentid" id="studentid" placeholder="Student ID" required="required" maxlength="9 " >
         <br />
         <br />
         <input type="password" class="rounded_login" name="studentpassword" id="studentpassword" placeholder="SJSU One Password" required="required" tooltip="Password">
@@ -59,7 +88,8 @@
         <input type="hidden" name="signinmethod" id="signinmethod" value="manual">
         <!--- <input type="submit" value="Sign In" name="signin" id="signinbutton"> --->
         <!--- <img src="/cf/vaishak/images/login.png" name="signinbutton" id="signinbutton" > --->
-        <div id="signinbutton">Sign In</div>
+        <!---<div id="signinbutton" class="blue_button">Sign In</div>--->
+        <input id="signinbutton" type="button" class="blue_button" value="Sign In">
       </form>
       <br />
     </section>
@@ -67,10 +97,8 @@
   <!-- Load Content -->
 </section>
 <!-- Pages-->
-<footer class="group">
-  <p></p>
-  <nav id="bottomnav"> </nav>
-</footer>
-<script src="/cf/vaishak/_/js/functions.js"></script>
+<footer class="group"> </footer>
+
+<!---<script src="/cf/vaishak/_/js/jquery.multiselect.js"></script>--->
 </body>
 </html>

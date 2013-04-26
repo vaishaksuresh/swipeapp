@@ -15,6 +15,7 @@ $(document).ready(function () {
     var invalidPhone = "Phone number must be all numeric.";
     var invalidMajor = "Invalid Major";
     var profileUpdated = "Profile has been updated successfully.";
+    var isfading = false;
 
     $(document).keypress(function (e) {
         if (e.which == 13) {
@@ -53,8 +54,24 @@ $(document).ready(function () {
                                     $("<div>").addClass("arrow").addClass(feedback.vertical).addClass(feedback.horizontal).appendTo(this);
                                 }
                             }
-
                         });
+                        if ($(window).width() > 1024) {
+                            $.getScript("/cf/vaishak/_/js/jquery.multiselect.min.js", function () {
+                                $("#areaofinterest").multiselect();
+                                if ($("#areaofinterest").val().indexOf("others") >= 0) {
+                                    $('#otherinterest').show();
+                                }
+                                $("#areaofinterest").bind("multiselectclick", function (event, ui) {
+                                    if (ui.value === 'others') {
+                                        $('#otherinterest').toggle();
+                                    }
+                                });
+                            });
+                        } else {
+                            if ($("#areaofinterest").val().indexOf("others") >= 0) {
+                                $('#otherinterest').show();
+                            }
+                        }
                     } else {
                         $('#inputarea').replaceWith($('#inputarea', $(data)));
                         $('#studentid').val(userID);
@@ -133,7 +150,7 @@ $(document).ready(function () {
                     if (typeof $('#inputarea', $(data)).val() != "undefined") {
                         $('#inputarea').replaceWith($('#inputarea', $(data)));
                         $('#studentid').focus();
-                        $('#user_session_box').html("<input type='button' value='Logout' class='logout_button' id='logout_button'> <input type='button' value='Manual Signin' class='logout_button' id='manualsigninbutton'>");
+                        $('#user_session_box').html("<input type='button' value='Logout' class='logout_button' id='logout_button'> <input type='button' value='Manual Sign-In' class='manualSignin' id='manualsigninbutton'>");
 
                     } else {
                         $('#message_box').text(pinIncorrect);
@@ -179,12 +196,47 @@ $(document).ready(function () {
         window.open('/vaishak/swpIndex.jsp');
         return false;
     });
+    $(document).on({
+        mouseenter: function () {
+            if ($(window).width() > 1024) {
+                $.getScript("/cf/vaishak/_/js/jquery.multiselect.min.js", function () {
+                    $("#areaofinterest").multiselect();
+                    if ($("#areaofinterest").val().indexOf("others") >= 0) {
+                        $('#otherinterest').show();
+                    }
+                    $("#areaofinterest").bind("multiselectclick", function (event, ui) {
+                        if (ui.value === 'others') {
+                            $('#otherinterest').toggle();
+                        }
+                    });
+                });
+            } else {
+                if ($("#areaofinterest").val().indexOf("others") >= 0) {
+                    $('#otherinterest').show();
+                }
+            }
+        }
+    }, '#areaofinterest');
     //Area of interest dropdown
     $("#areaofinterest").live("change", function () {
-        if ($("#areaofinterest").val() !== null && $("#areaofinterest").val().indexOf("others") >= 0) {
-            $('#otherinterest').show();
+        if ($(window).width() > 1024) {
+            $.getScript("/cf/vaishak/_/js/jquery.multiselect.min.js", function () {
+                $("#areaofinterest").multiselect();
+                if ($("#areaofinterest").val().indexOf("others") >= 0) {
+                    $('#otherinterest').show();
+                }
+                $("#areaofinterest").bind("multiselectclick", function (event, ui) {
+                    if (ui.value === 'others') {
+                        $('#otherinterest').toggle();
+                    }
+                });
+            });
         } else {
-            $('#otherinterest').hide();
+            if ($("#areaofinterest").val().indexOf("others") >= 0) {
+                $('#otherinterest').show();
+            }else{
+				$('#otherinterest').hide();
+			}
         }
     });
     $("#areaofinterest").live("click", function () {
@@ -192,6 +244,7 @@ $(document).ready(function () {
     });
     //On Click of the button to update profile
     $("#updateprofilebutton").live('click', function (e) {
+
         e.preventDefault();
         if ($.trim($('#studentname').val()).length <= 0) {
             alert("Name Cannot Be Blank");
@@ -207,7 +260,7 @@ $(document).ready(function () {
                 return false;
             }
         }
-        if ($("#areaofinterest").val() == 'others' && $.trim($('#otherinterest').val()).length <= 0) {
+        if (null !== $("#areaofinterest").val() && $("#areaofinterest").val().indexOf("others") >= 0 && $.trim($('#otherinterest').val()).length <= 0) {
             alert("Please enter area of interest");
             $('#otherinterest').focus();
             return false;
@@ -237,22 +290,30 @@ $(document).ready(function () {
             data: $('#updateprofile').serialize(),
             success: function (data, textStatus) {
                 if (typeof $('#formarea', $(data)).val() != "undefined") {
-					$('#message_green').css('display', 'block');
+                    if (isfading) {
+                        $('#message_green').stop().fadeOut();
+                        $('#message_green').fadeIn();
+                    }
+                    isfading = true;
+                    $('#message_green').css('display', 'block');
                     $('#message_green').text(profileUpdated);
+                    window.scrollTo(0, $("#message_green").offset().top);
                     //$('#formarea').replaceWith($('#formarea', $(data)));
                     //$("#areaofinterest").change();
                 } else {
                     $('#formarea').replaceWith($('#inputarea', $(data)));
                 }
                 $('#message_green').fadeOut(10000, function () {
+
                     $('#message_box').text("");
                     $('#message_box').hide();
                     $('#message_green').css('display', 'block');
                     $('#message_green').text("");
+                    isfading = false;
                 });
             },
             error: function (xhr, status, e) {
-                //alert(status, e);
+
                 $('#message_box').text("An Error Occured");
                 $('#message_box').fadeOut(10000, function () {
                     $('#message_box').css('display', 'block');
@@ -265,27 +326,22 @@ $(document).ready(function () {
         window.location.href = "/cf/vaishak/logout.cfm";
     });
     $('#eventradio').live('click', function () {
-		if($('#eventradio').is(":checked")){
-			$('#eventname').show();
-			$('#eventnameSelect').show();
-			$('#ortext').show();
-			$('#event_border_box').show();
-			$('#adminpinbutton').val("Submit");
-		}else{
-			$('#eventname').slideUp();
-			$('#eventnameSelect').slideUp();
-			$('#ortext').slideUp();
-			$('#event_border_box').slideUp();
-			$('#adminpinbutton').val("Sign In");
-		}
+        if ($('#eventradio').is(":checked")) {
+            $('#eventname').show();
+            $('#eventnameSelect').show();
+            $('#ortext').show();
+            $('#event_border_box').show();
+            $('#adminpinbutton').val("Submit");
+        } else {
+            $('#eventname').slideUp();
+            $('#eventnameSelect').slideUp();
+            $('#ortext').slideUp();
+            $('#event_border_box').slideUp();
+            $('#adminpinbutton').val("Sign In");
+        }
     });
-	$('#startDateText').on('click',function(){
-		$('#startDateText').datepicker();
-	});
-	$('#endDate').on('click',function(){
-		$('#endDate').datepicker();
-	});
-	$('#startDateText').on('change',function(){
-		alert("Changed");
-	});
+    $('#startDateText, #endDate').on('change', function () {
+        drawChart();
+        drawTable();
+    });
 });

@@ -12,7 +12,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 <META HTTP-EQUIV="CACHE-CONTROL" CONTENT="NO-CACHE">
 <title>C.C.A.C Swipe Application</title>
-<meta name="viewport" content="width=device-width, maximum-scale=1.0" />
+<meta name="viewport" content="width=device-width, user-scalable=no" />
 <link rel="stylesheet" href="/cf/vaishak/_/css/style.css">
 <script src="/cf/vaishak/_/js/modernizr-1.7.min.js"></script>
 <link href='http://fonts.googleapis.com/css?family=Leckerli+One|Rokkitt:700,400|Luckiest+Guy' rel='stylesheet' type='text/css'>
@@ -34,7 +34,6 @@
 <body>
 <cfinclude template="messages.cfm">
 <div id="user_session_box">
-  <!--- Hello Admin | <a href="/cf/vaishak/logout.cfm"><b>Logout</b></a> --->
 </div>
 <cfif #IsUserLoggedIn()# eq 'YES'>
   <cflocation url="/cf/vaishak/updateprofile.cfm" addtoken="no" />
@@ -58,16 +57,16 @@
         </cfif>
       </div>
       <form name="adminsignin" id="adminsignin" action="#" method="POST">
-        <input type="password" class="rounded_login" name="adminpin" id="adminpin" placeholder="Enter PIN" title="PIN" required="required">
-        <br />
-        <br />
-        <input type="checkbox" name="event" id="eventradio">
-        Select or Add Event <br />
-        <br />
+        <!---<input type="password" class="rounded_login" name="adminpin" id="adminpin" placeholder="Enter PIN" title="PIN" required="required">--->
+        <input type="password" class="rounded_login" name="adminpin" id="adminpin" placeholder="Enter PIN" maxlength="9" required="required">
+        <div id="subscribe_box">
+         <div id="inner"><input type="checkbox" name="event" id="eventradio"></div>
+        Select or Add Event 
+        </div>
         <div class="event_box" id="event_border_box" style="display:none;">
         <cfinvoke component="cfcomponents.utilComponent" method="getEventsForToday" returnvariable="eventsList"> </cfinvoke>
         <cfif #eventsList.RecordCount# gt 0>
-          <select name="chosenEventId" class="rounded" id="eventnameSelect" style="display:none;text-align:center">
+          <select name="chosenEventId" class="rounded" id="eventnameSelect" style="display:none; text-align:center">
 	          <option value="">Select an Event</option>
             <cfloop query="eventsList">
               <option value="<cfoutput>#eventsList.event_id#</cfoutput>"><cfoutput>#eventsList.event_name#</cfoutput></option>

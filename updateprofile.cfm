@@ -29,21 +29,21 @@
 <script src="/cf/vaishak/_/js/modernizr-1.7.min.js"></script>
 <script src="http://code.jquery.com/jquery-1.8.3.js"></script>
 <script src="http://code.jquery.com/ui/1.9.2/jquery-ui.js"></script>
-<link rel="stylesheet" href="/cf/vaishak/_/css/jquery.multiselect.css"/>
-<script src="/cf/vaishak/_/js/jquery.multiselect.min.js"></script>
 <script src="/cf/vaishak/_/js/functions.js"></script>
 <cfapplication sessionmanagement="yes" sessiontimeout="#CreateTimeSpan(0,0,30,0)#">
 <cfinclude template="messages.cfm">
 <script src="/cf/vaishak/_/js/ui.dropdownchecklist-1.4-min.js"></script>
 <link rel="stylesheet" href="/cf/vaishak/_/css/ui.dropdownchecklist.standalone.css">
-<script>
-$(document).ready(function(){
-	alert("Multi Select Happening");
-	$("#areaofinterest").multiselect();
-	//$("#areaofinterest").dropdownchecklist();
-	alert("Multi Select Done");
-});
-</script>
+<style>
+.ui-multiselect ui-widget ui-state-default ui-corner-all {
+    padding: 3px 8px;
+	font-size: 20px;
+	width: 280px;
+	-moz-border-radius: 10px;
+	-webkit-border-radius: 10px;
+	border-radius: 10px;
+}
+</style>
 </head>
 <body>
 <div id="user_session_box"> Hi
@@ -69,9 +69,9 @@ $(document).ready(function(){
         <cfset session.newslettercheckbox = ""/>
         <cfset session.loggedin = "false">
         <cfif #StructKeyExists(session,"eventid")#>
-			<cfset eventid = #session.eventid#>
-         <cfelse>
-	         <cfset eventid = "0">
+          <cfset eventid = #session.eventid#>
+          <cfelse>
+          <cfset eventid = "0">
         </cfif>
         <cfquery name="getUserFromDB" datasource="cccac_swipe" result="UserDetailsResult">
             Select * from ccac_registered_users WHERE student_id = #form.studentid#
@@ -189,6 +189,7 @@ $(document).ready(function(){
       </cfif>
       <!---<cfif #IsUserLoggedIn()# eq 'YES'>--->
       <cfif #structKeyExists(session,'user')# AND #session.loggedin# eq 'true'>
+      
         <p>Update or review your profile information</p>
         <div id="message_green">
           <cfif #isDefined("session.message")#>
@@ -242,6 +243,7 @@ $(document).ready(function(){
           <!---<div class="blue_button" id="updateprofilebutton">Update</div>--->
           <input type="button" id="updateprofilebutton" class="blue_button" value="Update">
         </form>
+
         <cfelse>
         <cfif cgi.request_method Eq 'post'>
           <cfset session.message = #invalidcredentials#>
